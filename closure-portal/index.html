@@ -732,12 +732,71 @@
         <label class="declare"><input type="checkbox" class="gf-check"> I understand that "I want to see other people" and a girlfriend application are conflicting filings.</label>
       </div>
 
-      <h3 class="form-section">Section D — Monogamy Definition &amp; Agreement</h3>
+      <h3 class="form-section">Section D — Emotional Competency Check</h3>
+      <p class="lp-note">Multiple choice. Only correct answers count toward
+      completion. Incorrect selections are retained for the file.</p>
+      <div class="field">
+        <label>D1. Your partner tells you something you did hurt her. The first thing to do is:</label>
+        <select class="gf-graded" data-correct="Listen and take it seriously">
+          <option value="">Select…</option>
+          <option>Explain why she shouldn't be hurt</option>
+          <option>Listen and take it seriously</option>
+          <option>Bring up something she did</option>
+          <option>Send a reel</option>
+        </select>
+        <p class="select-note" style="display:none">Incorrect. Selection retained for the file.</p>
+      </div>
+      <div class="field">
+        <label>D2. Monogamy, while in a committed relationship, applies:</label>
+        <select class="gf-graded" data-correct="Everywhere, at all times, including on trips">
+          <option value="">Select…</option>
+          <option>Everywhere, at all times, including on trips</option>
+          <option>Except while traveling for work</option>
+          <option>Unless nothing physical actually happens</option>
+          <option>When it is convenient</option>
+        </select>
+        <p class="select-note" style="display:none">Incorrect. Selection retained for the file.</p>
+      </div>
+      <div class="field">
+        <label>D3. The best way to keep your partner from getting "the wrong idea" about your behavior is to:</label>
+        <select class="gf-graded" data-correct="Not behave in a way that gives that idea">
+          <option value="">Select…</option>
+          <option>Tell her not to be jealous</option>
+          <option>Post it anyway and add a disclaimer</option>
+          <option>Not behave in a way that gives that idea</option>
+          <option>Blame her for noticing</option>
+        </select>
+        <p class="select-note" style="display:none">Incorrect. Selection retained for the file.</p>
+      </div>
+      <div class="field">
+        <label>D4. A partner who asks for consistency and commitment is:</label>
+        <select class="gf-graded" data-correct="Asking for the baseline of a relationship">
+          <option value="">Select…</option>
+          <option>Being needy</option>
+          <option>Asking for the baseline of a relationship</option>
+          <option>Trying to control you</option>
+          <option>Overreacting</option>
+        </select>
+        <p class="select-note" style="display:none">Incorrect. Selection retained for the file.</p>
+      </div>
+      <div class="field">
+        <label>D5. You promised before to be off the dating apps and weren't. Trust is rebuilt by:</label>
+        <select class="gf-graded" data-correct="Actually staying off them, over time">
+          <option value="">Select…</option>
+          <option>Promising again, more sincerely</option>
+          <option>Actually staying off them, over time</option>
+          <option>Pointing out that she has apps too</option>
+          <option>Deleting the app icon</option>
+        </select>
+        <p class="select-note" style="display:none">Incorrect. Selection retained for the file.</p>
+      </div>
+
+      <h3 class="form-section">Section E — Monogamy Definition &amp; Agreement</h3>
       <div class="locked-box" id="gf-secD-locked">
         <p>🔒 <strong>This section is locked.</strong> Definitions of emotional and
         physical monogamy are no longer accepted from applicants who have not
-        completed <strong>Remedial Monogamy Training</strong> (Module 2, main menu).
-        The Department has read enough improvised definitions.</p>
+        completed <strong>Remedial Monogamy Training</strong> (Module 2, in Remedial
+        Trainings). The Department has read enough improvised definitions.</p>
         <button class="btn secondary" id="gf-goto-monogamy">Go to Remedial Monogamy Training</button>
       </div>
       <div id="gf-secD" style="display:none">
@@ -767,7 +826,7 @@
       <p class="lede">Since this selection is <strong>materially different</strong> from
       what was experienced over the last twelve (12) calendar months, substantial
       documentation is required. This application contains five (5) parts and
-      thirty-one (31) items. Estimated completion time: 3–5 business hours.
+      thirty-three (33) items. Estimated completion time: 3–5 business hours.
       Progress does not save. This is a feature, not a bug.</p>
       <div id="lp-form"></div>
       <div id="lp-progress-wrap">
@@ -1097,7 +1156,7 @@
 
     <div class="receipt" id="m-complete" style="display:none">
       <h3>Module 2 complete ✓</h3>
-      <p>A completion token has been added to your file. <strong>Section D of the
+      <p>A completion token has been added to your file. <strong>Section E of the
       Girlfriend Application — Monogamy Definition &amp; Agreement — is now
       unlocked.</strong></p>
       <p>Summary of what you just demonstrated you understand: both forms of
@@ -1193,21 +1252,27 @@
   document.getElementById('partner-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
 
   // Girlfriend application: every field required before the button unlocks.
-  // Section D stays locked until Remedial Monogamy Training is complete.
+  // Section E (monogamy) stays locked until Remedial Monogamy Training is complete.
   function updateGF() {
     document.getElementById('gf-secD').style.display = monogamyComplete ? '' : 'none';
     document.getElementById('gf-secD-locked').style.display = monogamyComplete ? 'none' : '';
     const texts = [...document.querySelectorAll('#form-girlfriend .gf-req')];
     const checks = [...document.querySelectorAll('#form-girlfriend .gf-check')];
+    const graded = [...document.querySelectorAll('#form-girlfriend .gf-graded')];
     const select = document.getElementById('gf-appcount');
     document.getElementById('gf-appcount-note').style.display = select.value ? 'block' : 'none';
+    graded.forEach(g => {
+      const note = g.parentElement.querySelector('.select-note');
+      if (note) note.style.display = (g.value && g.value !== g.dataset.correct) ? 'block' : 'none';
+    });
     const done = texts.filter(t => t.value.trim()).length
       + checks.filter(c => c.checked).length
+      + graded.filter(g => g.value === g.dataset.correct).length
       + (select.value ? 1 : 0);
-    const total = texts.length + checks.length + 1;
+    const total = texts.length + checks.length + graded.length + 1;
     let msg = `Application completeness: ${done} of ${total} items`;
     if (done >= total) msg += '. Noted, with mild surprise.';
-    else if (!monogamyComplete) msg += ' — Section D is locked pending Remedial Monogamy Training.';
+    else if (!monogamyComplete) msg += ' — Section E is locked pending Remedial Monogamy Training.';
     else msg += ' — the form knows which ones you skipped.';
     document.getElementById('gf-progress').textContent = msg;
     document.getElementById('girlfriend-submit').disabled = done < total;
@@ -1317,7 +1382,7 @@
     }
   }
 
-  // Life partner application: rendered from data, 31 items, all required
+  // Life partner application: rendered from data, 33 items, all required
   const LP_SECTIONS = [
     { title: 'Part I — Girlfriend Application Requirements (Incorporated by Reference)',
       note: 'Life Partner applicants must complete every Girlfriend Application item. It does not carry over. Yes, again.',
@@ -1330,23 +1395,26 @@
         { t: 'check', label: "I understand that deleting an app's icon does not delete the account behind it." },
         { t: 'check', label: 'I understand that "I want to see other people," stated during fights, remains on the record.' },
       ] },
-    { title: 'Part II — Emotional Competency Examination',
-      note: 'Multiple choice. Incorrect answers are preserved for the file.',
+    { title: 'Part II — Emotional Competency Examination (Advanced)',
+      note: 'Scenario-based. Plausible-sounding wrong answers have been included on purpose; only the mature answer counts. This section is where most applications end.',
       items: [
-        { t: 'textarea', label: 'II-1. Define "emotional monogamy" in your own words', ph: 'This has come up.' },
-        { t: 'textarea', label: 'II-2. Define "physical monogamy." If your definition contains the word "but," delete it and restart', ph: 'This has also come up.' },
-        { t: 'select', label: 'II-3. When your partner tells you she is hurt, the correct first response is:', correct: 'Listening',
-          options: ['"You\'re overreacting"', '"You have nothing to be jealous about"', 'Listening', 'An Instagram reel'] },
-        { t: 'select', label: 'II-4. An apology is:', correct: 'Accountability + remorse + changed behavior',
-          options: ['Something said to end a conversation', 'A lunch invitation', 'Accountability + remorse + changed behavior', 'A voicemail with an agenda'] },
-        { t: 'select', label: 'II-5. A stated boundary should be:', correct: 'Honored',
-          options: ['Honored', 'Tested periodically', 'Described as "cold"', 'The subject of a voicemail'] },
-        { t: 'select', label: 'II-6. The correct number of consecutive days to send unsolicited content to someone who asked for space is:', correct: 'Zero',
-          options: ['Zero', 'Twelve', 'As many as it takes', 'Depends on the reels'] },
-        { t: 'select', label: 'II-7. "Go find another man" is:', correct: 'A breakup',
-          options: ['A breakup', 'A test', 'Reverse psychology', 'Romance'] },
-        { t: 'select', label: 'II-8. Shelter Island is:', correct: 'An island',
-          options: ['An island', 'A consequence-free zone', 'Something to announce via voicemail', 'A substitute for accountability'] },
+        { t: 'textarea', label: 'II-1. Explain the difference between your partner being "jealous" and your partner responding to something that actually happened. Give an example of each.', ph: 'One of these has previously been misused as a defense.' },
+        { t: 'textarea', label: 'II-2. Your partner is hurt by something you did. Describe what you owe her in that moment — and what you specifically do NOT get to ask of her in return.', ph: 'The second half is the part usually skipped.' },
+        { t: 'select', label: 'II-3. Your partner says a specific behavior hurt her. You genuinely did not intend harm. The mature response is to:', correct: 'Acknowledge the impact and change the behavior, regardless of intent',
+          options: ["Explain your intent so she understands it wasn't meant that way", 'Acknowledge the impact and change the behavior, regardless of intent', 'Apologize that she feels that way', "Note that you've done thoughtful things too"] },
+        { t: 'select', label: 'II-4. The same behavior has broken trust more than once. Rebuilding it primarily requires:', correct: 'A sustained pattern of changed behavior over time, unprompted',
+          options: ['A sincere and heartfelt promise', 'A sustained pattern of changed behavior over time, unprompted', 'Reassurance whenever she feels anxious', 'Reminding her that you are here now'] },
+        { t: 'select', label: 'II-5. Which statement is accountability rather than deflection?', correct: '"I did that knowing it could hurt you, and it was wrong."',
+          options: ['"I\'m sorry if you were hurt."', '"I\'m sorry you saw it that way."', '"I did that knowing it could hurt you, and it was wrong."', '"I didn\'t technically do anything."'] },
+        { t: 'select', label: 'II-6. Emotional monogamy is most accurately violated by:', correct: 'Cultivating or publicly performing romantic intimacy with others',
+          options: ['Only physical contact with someone else', 'Cultivating or publicly performing romantic intimacy with others', "Nothing, as long as you don't act on it", 'Simply having friends who are women'] },
+        { t: 'select', label: 'II-7. Your partner asks that you not be on dating apps while together. This request is:', correct: 'A reasonable baseline of an exclusive relationship',
+          options: ['Controlling', 'A reasonable baseline of an exclusive relationship', 'Negotiable depending on your needs', 'Fine to agree to and quietly ignore'] },
+        { t: 'select', label: 'II-8. You want a serious relationship, a wife, and a family. The behavior most incompatible with that goal is:', correct: 'Publicly seeking attention from others while telling your partner not to react',
+          options: ['Being busy with work', 'Needing occasional alone time', 'Publicly seeking attention from others while telling your partner not to react', 'Traveling when your job requires it'] },
+        { t: 'select', label: 'II-9. Repeatedly ending things ("go find another man") and then re-initiating contact is best understood as:', correct: 'Its own form of harm, regardless of the feelings behind it',
+          options: ['A normal part of a passionate relationship', 'Its own form of harm, regardless of the feelings behind it', 'Acceptable as long as you are honest each time', 'Something both people usually do'] },
+        { t: 'textarea', label: 'II-10. In 3–5 sentences, state what "building a life together" requires from you specifically, and identify which of those you have not yet provided.', ph: 'The Complaint Review Division already has a version of this on file.' },
       ] },
     { title: 'Part III — Historical Record',
       note: 'Entries the Department already knows about but you omit will be noticed.',
@@ -1470,6 +1538,7 @@
     showMoreTimePanel('tier-select');
     document.querySelectorAll('#form-girlfriend textarea').forEach(t => t.value = '');
     document.querySelectorAll('#form-girlfriend .gf-check').forEach(c => c.checked = false);
+    document.querySelectorAll('#form-girlfriend .gf-graded').forEach(s => s.value = '');
     document.getElementById('gf-appcount').value = '';
     updateGF();
     renderLP();
