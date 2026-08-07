@@ -309,6 +309,54 @@
   .status-no { color: var(--deny); font-style: normal; font-weight: 600; }
   .status-yes { color: var(--ok); font-style: normal; font-weight: 600; }
 
+  .trainings {
+    margin-top: 38px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .trainings-title {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .trainings-sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .training-link {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .training-link:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .training-link .t-icon { font-size: 20px; flex-shrink: 0; }
+  .training-link .t-body strong { display: block; margin-bottom: 2px; }
+  .training-link .t-body { color: var(--ink-soft); }
+  .training-link .t-body strong { color: var(--ink); }
+  .text-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--accent);
+    font: inherit;
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   .incident-log {
     margin: 0 0 8px 20px;
     font-size: 14.5px;
@@ -497,15 +545,10 @@
         <h3>File a complaint about Haley's Instagram activity</h3>
         <p>Concerns regarding who Haley follows may be submitted for immediate processing.</p>
       </button>
-      <button class="menu-card" data-go="screen-training">
-        <span class="icon">📋</span>
-        <h3>Complete mandatory remedial apology training</h3>
-        <p>Module 1 of 2: Writing an Actual Apology. Enrollment is automatic. Completion, historically, is not.</p>
-      </button>
-      <button class="menu-card" data-go="screen-monogamy">
-        <span class="icon">💞</span>
-        <h3>Complete remedial monogamy training</h3>
-        <p>Module 2 of 2: Understanding Emotional and Physical Monogamy. Two terms that have historically been used loosely, defined at last.</p>
+      <button class="menu-card" id="menu-apology-submit">
+        <span class="icon">✍️</span>
+        <h3>Submit an apology</h3>
+        <p>Ready to take accountability in writing? Submit your apology directly for grading. Support materials are available should the grade disappoint.</p>
       </button>
       <button class="menu-card" data-go="screen-life">
         <span class="icon">🏗️</span>
@@ -521,6 +564,22 @@
         <span class="icon">💡</span>
         <h3>Request a feature</h3>
         <p>Hoping to reach out in a way you don't see supported? Submit a request and our team will review. Check back periodically for updates.</p>
+      </button>
+    </div>
+
+    <div class="trainings">
+      <h3 class="trainings-title">Remedial Trainings</h3>
+      <p class="trainings-sub">Self-paced modules. Enrollment is automatic. Completion
+      is optional, but the gaps are observable.</p>
+      <button class="training-link" data-go="screen-training">
+        <span class="t-icon">📋</span>
+        <span class="t-body"><strong>Module 1 — Writing an Actual Apology</strong>
+        Accountability, remorse, and a genuine apology paragraph, graded.</span>
+      </button>
+      <button class="training-link" data-go="screen-monogamy">
+        <span class="t-icon">💞</span>
+        <span class="t-body"><strong>Module 2 — Understanding Emotional &amp; Physical Monogamy</strong>
+        Two terms that have historically been used loosely, defined at last.</span>
       </button>
     </div>
   </section>
@@ -986,11 +1045,15 @@
 
     <!-- Lesson 4: compose -->
     <div class="panel t-panel" id="t-compose" style="display:none">
-      <p class="progress-label">Lesson 4 of 4 · Final Composition</p>
+      <p class="progress-label">Final Composition · Graded</p>
       <h2>The Apology Paragraph</h2>
-      <p class="lede">Combine everything from Lessons 1–3 into one genuine apology
-      paragraph. The rubric below updates as you write. All criteria must be met
-      before grading. The rubric cannot be argued with; it has heard it all.</p>
+      <p class="lede">Write one genuine apology paragraph. The rubric below updates
+      as you write. All criteria must be met before grading. The rubric cannot be
+      argued with; it has heard it all.</p>
+      <p class="lp-note">Not sure what to write?
+      <button class="text-link" id="compose-goto-module">Complete Remedial Apology
+      Training (Module 1)</button> — it walks you through accountability, remorse,
+      and what you did, then returns you here.</p>
       <div class="field">
         <textarea id="t4-text" rows="7" placeholder="Dear Haley, I am sorry that I…"></textarea>
       </div>
@@ -1006,8 +1069,10 @@
       <h3 class="redpen-title">Instructor comments:</h3>
       <ul class="redpen-list" id="redpen"></ul>
       <div class="feedback bad" id="grade-verdict" style="display:none">Resubmission
-      required. Revise and resubmit. The instructor will wait — she's had practice.</div>
+      required. Revise and resubmit — or complete Remedial Apology Training first.
+      The instructor will wait; she's had practice.</div>
       <button class="btn" id="grade-revise" style="display:none">Revise submission</button>
+      <button class="btn secondary" id="grade-goto-module" style="display:none">Take Remedial Apology Training (Module 1)</button>
       <button class="btn" id="grade-pass" style="display:none">Collect certificate</button>
     </div>
 
@@ -1746,11 +1811,21 @@
       : failed.map(r => `<li>${r.pen}</li>`).join('');
     document.getElementById('grade-verdict').style.display = pass ? 'none' : 'block';
     document.getElementById('grade-revise').style.display = pass ? 'none' : 'inline-block';
+    document.getElementById('grade-goto-module').style.display = pass ? 'none' : 'inline-block';
     document.getElementById('grade-pass').style.display = pass ? 'inline-block' : 'none';
     showTrainingPanel('t-grade');
   });
   document.getElementById('grade-revise').addEventListener('click', () => showTrainingPanel('t-compose'));
   document.getElementById('grade-pass').addEventListener('click', () => showTrainingPanel('t-cert'));
+
+  // Direct apology submission from the main menu; module remains reachable
+  // from the compose screen and from a failing grade.
+  document.getElementById('menu-apology-submit').addEventListener('click', () => {
+    show('screen-training');
+    showTrainingPanel('t-compose');
+  });
+  document.getElementById('compose-goto-module').addEventListener('click', () => showTrainingPanel('t-intro'));
+  document.getElementById('grade-goto-module').addEventListener('click', () => showTrainingPanel('t-intro'));
 
   function resetTraining() {
     quizIndex = 0;
