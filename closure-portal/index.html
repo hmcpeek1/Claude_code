@@ -265,6 +265,40 @@
   }
 
   .choice.mood.selected { border-color: var(--accent); background: var(--accent-soft); }
+  .form-section {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    margin: 28px 0 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  select {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14.5px;
+    font-family: inherit;
+    background: #fdfcfa;
+    width: 100%;
+    max-width: 460px;
+    display: block;
+  }
+  .declare, .field .declare {
+    display: flex; gap: 10px; align-items: baseline;
+    font-size: 14px; font-weight: 400;
+    padding: 7px 0; cursor: pointer;
+  }
+  .select-note {
+    color: var(--deny);
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .completeness { font-size: 13px; color: var(--ink-soft); margin: 18px 0 10px; }
+  .lp-note { font-size: 13px; color: var(--ink-soft); font-style: italic; margin: -4px 0 16px; }
+  #lp-progress-wrap { margin: 22px 0 14px; }
+  #lp-progress-wrap .queue-bar .fill { transition: width 0.3s ease; }
   .roadmap-title {
     font-family: Georgia, serif;
     font-size: 16px;
@@ -538,47 +572,73 @@
       <h2>Wow! Interesting choice!</h2>
       <p class="lede">Since this selection is <strong>materially different</strong> from
       what was experienced over the last twelve (12) calendar months, additional
-      documentation is required. Please submit, in writing:</p>
+      documentation is required. The application has three (3) sections. All fields
+      are required. The form knows which ones you skipped.</p>
+
+      <h3 class="form-section">Section A — Prerequisite: The Apology</h3>
       <div class="field">
-        <label>1. What has changed your thinking? <span class="hint">(Note: "you seem different lately" is not a change in thinking. It is an observation about someone else.)</span></label>
-        <textarea placeholder="Be specific. Voicemail transcripts will be cross-referenced."></textarea>
+        <label>A1. Paste the full text of the genuine apology you have already delivered to Haley <span class="hint">(applications submitted before an apology has been delivered are returned unread — see Remedial Apology Training on the main menu)</span></label>
+        <textarea class="gf-req" placeholder="If nothing comes to mind, that is itself the finding."></textarea>
+      </div>
+      <label class="declare"><input type="checkbox" class="gf-check"> I confirm this apology was actually sent to Haley, not merely typed into this box to unlock the button.</label>
+
+      <h3 class="form-section">Section B — Written Statements</h3>
+      <div class="field">
+        <label>B1. What has changed your thinking? <span class="hint">(Note: "you seem different lately" is not a change in thinking. It is an observation about someone else.)</span></label>
+        <textarea class="gf-req" placeholder="Be specific. Voicemail transcripts will be cross-referenced."></textarea>
       </div>
       <div class="field">
-        <label>2. What behavior change are you actively working on? <span class="hint">("Working on" requires present-tense action, not future-tense intention.)</span></label>
-        <textarea placeholder="Sending 47 Instagram reels is not a behavior change."></textarea>
+        <label>B2. What behavior change are you actively working on? <span class="hint">("Working on" requires present-tense action, not future-tense intention.)</span></label>
+        <textarea class="gf-req" placeholder="Sending 47 Instagram reels is not a behavior change."></textarea>
       </div>
       <div class="field">
-        <label>3. Your plan to move forward <span class="hint">(Plans must contain steps. Lunch before Shelter Island is not a step.)</span></label>
-        <textarea placeholder="Include milestones, dates, and at least one apology."></textarea>
+        <label>B3. Your plan to move forward <span class="hint">(Plans must contain steps. Lunch before Shelter Island is not a step.)</span></label>
+        <textarea class="gf-req" placeholder="Include milestones, dates, and at least one apology."></textarea>
       </div>
-      <button class="btn" id="girlfriend-submit">Submit written statement</button>
+
+      <h3 class="form-section">Section C — Dating App Divestiture Plan</h3>
+      <p class="lp-note">Department records indicate a recurring cycle: apps "deleted" →
+      apps reappear → discovery → conflict → a stated desire to "see other people" →
+      repeat. This section addresses the cycle.</p>
+      <div class="field">
+        <label>C1. How many times have you previously announced that all dating apps were deleted?</label>
+        <select id="gf-appcount">
+          <option value="">Select…</option>
+          <option>Once or twice</option>
+          <option>Three to five times</option>
+          <option>I've lost count</option>
+          <option>Define "deleted"</option>
+        </select>
+        <p class="select-note" id="gf-appcount-note" style="display:none">Noted. Department records indicate: more.</p>
+      </div>
+      <div class="field">
+        <label>C2. Describe your plan to be off any and all dating apps <span class="hint">("I deleted it" has been submitted previously and is no longer accepted as a plan — deleting an app is not deleting the account, and the Department is aware of the difference)</span></label>
+        <textarea class="gf-req" placeholder="Include: which accounts, deleted by when, and how anyone would ever know."></textarea>
+      </div>
+      <div class="field">
+        <label>C3. Sworn declarations <span class="hint">(all required)</span></label>
+        <label class="declare"><input type="checkbox" class="gf-check"> I understand that deleting an app's icon does not delete the account behind it.</label>
+        <label class="declare"><input type="checkbox" class="gf-check"> I understand that "taking a break from the apps" is a vacation, not a departure.</label>
+        <label class="declare"><input type="checkbox" class="gf-check"> I understand that being visible on the apps is how this was discovered the previous time(s).</label>
+        <label class="declare"><input type="checkbox" class="gf-check"> I understand that "I want to see other people" and a girlfriend application are conflicting filings.</label>
+      </div>
+
+      <p class="completeness" id="gf-progress"></p>
+      <button class="btn" id="girlfriend-submit" disabled>Submit application</button>
     </div>
 
     <!-- C: Life Partner -->
     <div class="panel" id="form-partner" style="display:none">
       <h2>Wow! Interesting choice!</h2>
       <p class="lede">Since this selection is <strong>materially different</strong> from
-      what was experienced over the last twelve (12) calendar months, additional
-      documentation is required. Please submit, in writing:</p>
-      <div class="field">
-        <label>1. What has changed your thinking?</label>
-        <textarea placeholder="Be specific. Voicemail transcripts will be cross-referenced."></textarea>
-      </div>
-      <div class="field">
-        <label>2. What behavior change are you actively working on?</label>
-        <textarea placeholder="Sending 47 Instagram reels is not a behavior change."></textarea>
-      </div>
-      <div class="field">
-        <label>3. Your plan to move forward</label>
-        <textarea placeholder="Include milestones, dates, and at least one apology."></textarea>
-      </div>
-      <div class="field">
-        <label>4. Required supporting documentation <span class="hint">(All three items required. The submit button knows if you skipped one.)</span></label>
-        <div class="upload-req" data-req="1">📄 Records of six (6) months of intensive individual therapy <span class="tick">✓</span></div>
-        <div style="height:10px"></div>
-        <div class="upload-req" data-req="2">📄 Records of six (6) months of couples therapy <span class="tick">✓</span></div>
-        <div style="height:10px"></div>
-        <div class="upload-req" data-req="3">📄 Two (2) letters of recommendation from friends or family <span class="tick">✓</span></div>
+      what was experienced over the last twelve (12) calendar months, substantial
+      documentation is required. This application contains five (5) parts and
+      thirty-one (31) items. Estimated completion time: 3–5 business hours.
+      Progress does not save. This is a feature, not a bug.</p>
+      <div id="lp-form"></div>
+      <div id="lp-progress-wrap">
+        <p class="completeness" id="lp-progress"></p>
+        <div class="queue-bar"><div class="fill" id="lp-progress-fill" style="width:0%"></div></div>
       </div>
       <button class="btn" id="partner-submit" disabled>Submit full application</button>
     </div>
@@ -898,22 +958,182 @@
   document.getElementById('choice-girlfriend').addEventListener('click', () => showMoreTimePanel('form-girlfriend'));
   document.getElementById('choice-partner').addEventListener('click', () => showMoreTimePanel('form-partner'));
   document.getElementById('girlfriend-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
-
-  const reqDocs = new Set();
-  document.querySelectorAll('.upload-req').forEach(el => {
-    el.addEventListener('click', () => {
-      el.classList.add('done');
-      reqDocs.add(el.dataset.req);
-      document.getElementById('partner-submit').disabled = reqDocs.size < 3;
-    });
-  });
   document.getElementById('partner-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
+
+  // Girlfriend application: every field required before the button unlocks
+  function updateGF() {
+    const texts = [...document.querySelectorAll('#form-girlfriend .gf-req')];
+    const checks = [...document.querySelectorAll('#form-girlfriend .gf-check')];
+    const select = document.getElementById('gf-appcount');
+    document.getElementById('gf-appcount-note').style.display = select.value ? 'block' : 'none';
+    const done = texts.filter(t => t.value.trim()).length
+      + checks.filter(c => c.checked).length
+      + (select.value ? 1 : 0);
+    const total = texts.length + checks.length + 1;
+    document.getElementById('gf-progress').textContent =
+      `Application completeness: ${done} of ${total} items` +
+      (done < total ? ' — the form knows which ones you skipped.' : '. Noted, with mild surprise.');
+    document.getElementById('girlfriend-submit').disabled = done < total;
+  }
+  document.getElementById('form-girlfriend').addEventListener('input', updateGF);
+  document.getElementById('form-girlfriend').addEventListener('change', updateGF);
+
+  // Life partner application: rendered from data, 31 items, all required
+  const LP_SECTIONS = [
+    { title: 'Part I — Girlfriend Application Requirements (Incorporated by Reference)',
+      note: 'Life Partner applicants must complete every Girlfriend Application item. It does not carry over. Yes, again.',
+      items: [
+        { t: 'textarea', label: 'I-1. Paste the full text of the genuine apology you have already delivered to Haley', ph: 'Delivered means sent.' },
+        { t: 'textarea', label: 'I-2. What has changed your thinking?', ph: 'Be specific. Voicemail transcripts will be cross-referenced.' },
+        { t: 'textarea', label: 'I-3. What behavior change are you actively working on?', ph: 'Sending 47 Instagram reels is not a behavior change.' },
+        { t: 'textarea', label: 'I-4. Your plan to move forward', ph: 'Include milestones, dates, and at least one apology.' },
+        { t: 'textarea', label: 'I-5. Your plan to be off any and all dating apps, permanently', ph: '"I deleted it" is not accepted. The Department is aware that apps and accounts are different things.' },
+        { t: 'check', label: "I understand that deleting an app's icon does not delete the account behind it." },
+        { t: 'check', label: 'I understand that "I want to see other people," stated during fights, remains on the record.' },
+      ] },
+    { title: 'Part II — Emotional Competency Examination',
+      note: 'Multiple choice. Incorrect answers are preserved for the file.',
+      items: [
+        { t: 'textarea', label: 'II-1. Define "emotional monogamy" in your own words', ph: 'This has come up.' },
+        { t: 'textarea', label: 'II-2. Define "physical monogamy." If your definition contains the word "but," delete it and restart', ph: 'This has also come up.' },
+        { t: 'select', label: 'II-3. When your partner tells you she is hurt, the correct first response is:', correct: 'Listening',
+          options: ['"You\'re overreacting"', '"You have nothing to be jealous about"', 'Listening', 'An Instagram reel'] },
+        { t: 'select', label: 'II-4. An apology is:', correct: 'Accountability + remorse + changed behavior',
+          options: ['Something said to end a conversation', 'A lunch invitation', 'Accountability + remorse + changed behavior', 'A voicemail with an agenda'] },
+        { t: 'select', label: 'II-5. A stated boundary should be:', correct: 'Honored',
+          options: ['Honored', 'Tested periodically', 'Described as "cold"', 'The subject of a voicemail'] },
+        { t: 'select', label: 'II-6. The correct number of consecutive days to send unsolicited content to someone who asked for space is:', correct: 'Zero',
+          options: ['Zero', 'Twelve', 'As many as it takes', 'Depends on the reels'] },
+        { t: 'select', label: 'II-7. "Go find another man" is:', correct: 'A breakup',
+          options: ['A breakup', 'A test', 'Reverse psychology', 'Romance'] },
+        { t: 'select', label: 'II-8. Shelter Island is:', correct: 'An island',
+          options: ['An island', 'A consequence-free zone', 'Something to announce via voicemail', 'A substitute for accountability'] },
+      ] },
+    { title: 'Part III — Historical Record',
+      note: 'Entries the Department already knows about but you omit will be noticed.',
+      items: [
+        { t: 'textarea', label: 'III-1. Describe every instance in which dating apps were announced deleted while accounts remained active', ph: 'Take your time. The form autosaves nothing.' },
+        { t: 'textarea', label: 'III-2. Describe what "go find another man" communicates to the person you are now asking to be your life partner', ph: 'Use complete sentences.' },
+        { t: 'textarea', label: 'III-3. List each hurtful event of the last twelve (12) months and what you would do differently', ph: 'Chronological order preferred. Reverse-chronological accepted.' },
+        { t: 'textarea', label: 'III-4. Explain the twelve (12) days of post-breakup content. What was the goal? Was it achieved?', ph: 'Include the Guatemala reels in your analysis.' },
+      ] },
+    { title: 'Part IV — Forward Commitments',
+      items: [
+        { t: 'textarea', label: 'IV-1. Your five (5) year plan for not repeating anything in Part III', ph: 'Plans contain steps.' },
+        { t: 'textarea', label: 'IV-2. Three (3) habits you have already changed, with approximate dates and witnesses', ph: 'Witnesses may be contacted.' },
+        { t: 'textarea', label: 'IV-3. Describe your understanding of "emotional labor" and identify who has been performing it', ph: 'Hint: not you.' },
+        { t: 'select', label: 'IV-4. Select your commitment level:', correct: 'Full emotional and physical monogamy',
+          options: ['Full emotional and physical monogamy', 'Mostly', 'Committed-ish', 'Prefer not to answer'] },
+      ] },
+    { title: 'Part V — Documentation & Certification',
+      note: 'All documents required. The submit button is counting.',
+      items: [
+        { t: 'upload', label: 'Records of six (6) months of intensive individual therapy' },
+        { t: 'upload', label: 'Records of six (6) months of couples therapy' },
+        { t: 'upload', label: 'Two (2) letters of recommendation from friends or family' },
+        { t: 'upload', label: 'Screenshot evidence of deleted dating app accounts — accounts, not icons' },
+        { t: 'upload', label: 'Signed statement from one (1) mutual friend confirming you have "seemed different lately"' },
+        { t: 'check', label: 'I certify that I read every question in this application rather than skimming to the end.' },
+        { t: 'check', label: 'I certify, under penalty of continued singleness, that the above is true and complete.' },
+        { t: 'text', label: 'Signature (type full legal name)', ph: 'No initials. No nicknames. No "you know who this is."' },
+      ] },
+  ];
+
+  function renderLP() {
+    const root = document.getElementById('lp-form');
+    root.innerHTML = '';
+    LP_SECTIONS.forEach(sec => {
+      const h = document.createElement('h3');
+      h.className = 'form-section';
+      h.textContent = sec.title;
+      root.appendChild(h);
+      if (sec.note) {
+        const n = document.createElement('p');
+        n.className = 'lp-note';
+        n.textContent = sec.note;
+        root.appendChild(n);
+      }
+      sec.items.forEach(item => {
+        if (item.t === 'check') {
+          const lab = document.createElement('label');
+          lab.className = 'declare';
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.className = 'lp-item lp-check';
+          lab.appendChild(cb);
+          lab.appendChild(document.createTextNode(' ' + item.label));
+          root.appendChild(lab);
+          return;
+        }
+        if (item.t === 'upload') {
+          const up = document.createElement('div');
+          up.className = 'upload-req lp-item lp-upload';
+          up.innerHTML = '📄 <span></span><span class="tick">✓</span>';
+          up.querySelector('span').textContent = item.label;
+          up.addEventListener('click', () => { up.classList.add('done'); updateLP(); });
+          root.appendChild(up);
+          const gap = document.createElement('div');
+          gap.style.height = '10px';
+          root.appendChild(gap);
+          return;
+        }
+        const field = document.createElement('div');
+        field.className = 'field';
+        const lab = document.createElement('label');
+        lab.textContent = item.label;
+        field.appendChild(lab);
+        if (item.t === 'select') {
+          const sel = document.createElement('select');
+          sel.className = 'lp-item lp-select';
+          sel.dataset.correct = item.correct;
+          sel.appendChild(new Option('Select…', ''));
+          item.options.forEach(o => sel.appendChild(new Option(o, o)));
+          field.appendChild(sel);
+          const note = document.createElement('p');
+          note.className = 'select-note';
+          note.style.display = 'none';
+          note.textContent = 'Incorrect, but preserved for the file.';
+          field.appendChild(note);
+          sel.addEventListener('change', () => {
+            note.style.display = (sel.value && sel.value !== item.correct) ? 'block' : 'none';
+            updateLP();
+          });
+        } else {
+          const el = document.createElement(item.t === 'text' ? 'input' : 'textarea');
+          if (item.t === 'text') el.type = 'text';
+          el.className = 'lp-item lp-text';
+          el.placeholder = item.ph || '';
+          el.addEventListener('input', updateLP);
+          field.appendChild(el);
+        }
+        root.appendChild(field);
+      });
+    });
+    updateLP();
+  }
+  function updateLP() {
+    const items = [...document.querySelectorAll('#lp-form .lp-item')];
+    const done = items.filter(el => {
+      if (el.classList.contains('lp-check')) return el.checked;
+      if (el.classList.contains('lp-upload')) return el.classList.contains('done');
+      if (el.classList.contains('lp-select')) return el.value === el.dataset.correct;
+      return el.value.trim().length > 0;
+    }).length;
+    const pct = items.length ? Math.round(done / items.length * 100) : 0;
+    document.getElementById('lp-progress').textContent =
+      `Application progress: ${pct}% (${done} of ${items.length} items)` +
+      (pct < 100 ? ' — the form remembers what you skipped.' : ' — submission unlocked. The Department is as surprised as you are.');
+    document.getElementById('lp-progress-fill').style.width = pct + '%';
+    document.getElementById('partner-submit').disabled = pct < 100;
+  }
+
   function resetMoreTime() {
     showMoreTimePanel('tier-select');
-    reqDocs.clear();
-    document.querySelectorAll('.upload-req').forEach(el => el.classList.remove('done'));
-    document.getElementById('partner-submit').disabled = true;
-    document.querySelectorAll('#form-girlfriend textarea, #form-partner textarea').forEach(t => t.value = '');
+    document.querySelectorAll('#form-girlfriend textarea').forEach(t => t.value = '');
+    document.querySelectorAll('#form-girlfriend .gf-check').forEach(c => c.checked = false);
+    document.getElementById('gf-appcount').value = '';
+    updateGF();
+    renderLP();
   }
 
   // ---- Emotional intake ----
