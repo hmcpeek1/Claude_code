@@ -264,6 +264,88 @@
     border-radius: 5px;
   }
 
+  .progress-label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .t-panel { margin-bottom: 0; }
+  .feedback {
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin: 16px 0;
+  }
+  .feedback.bad { background: var(--deny-soft); border: 1px solid #f0c4be; color: var(--deny); }
+  .feedback.good { background: var(--ok-soft); border: 1px solid #bcdcc9; color: var(--ok); }
+  .quiz-correct { border-color: var(--ok) !important; background: var(--ok-soft) !important; }
+  .quiz-wrong { border-color: var(--deny) !important; background: var(--deny-soft) !important; }
+  .rubric { list-style: none; margin: 0 0 20px; }
+  .rubric li {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 8px 4px;
+    border-bottom: 1px dotted var(--line);
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .rubric li .mark { font-weight: bold; flex-shrink: 0; width: 18px; }
+  .rubric li.met { color: var(--ink); }
+  .rubric li.met .mark { color: var(--ok); }
+  .rubric li:not(.met) .mark { color: var(--deny); }
+  .grade-box {
+    display: flex; align-items: baseline; gap: 16px;
+    margin: 18px 0 22px;
+  }
+  .grade-box #grade-letter {
+    font-family: Georgia, serif;
+    font-size: 64px;
+    font-weight: bold;
+    color: var(--deny);
+    line-height: 1;
+  }
+  .grade-box #grade-score { font-size: 15px; color: var(--ink-soft); }
+  .grade-box.pass #grade-letter { color: var(--ok); }
+  .redpen-title {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    color: var(--deny);
+    margin-bottom: 8px;
+  }
+  .redpen-list { list-style: none; margin: 0 0 20px; }
+  .redpen-list li {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: var(--deny);
+    font-size: 14.5px;
+    padding: 7px 0 7px 16px;
+    border-left: 3px solid var(--deny);
+    margin-bottom: 8px;
+  }
+  .redpen-list li.praise { color: var(--ok); border-left-color: var(--ok); }
+  .certificate {
+    background: var(--card);
+    border: 6px double var(--ink);
+    border-radius: 6px;
+    padding: 40px 34px;
+    text-align: center;
+  }
+  .cert-eyebrow {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--ink-soft); margin-bottom: 12px;
+  }
+  .certificate h2 { font-family: Georgia, serif; font-size: 30px; margin-bottom: 16px; }
+  .cert-body { font-size: 15px; max-width: 520px; margin: 0 auto 16px; }
+  .cert-grade { font-size: 15px; margin-bottom: 18px; }
+  .cert-grade em { font-size: 12.5px; color: var(--ink-soft); }
+  .cert-fine {
+    font-size: 11.5px; color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 14px; max-width: 520px; margin: 0 auto;
+  }
+
   footer {
     text-align: center;
     padding: 26px 20px 44px;
@@ -314,6 +396,11 @@
         <span class="icon">📢</span>
         <h3>File a complaint about Haley's Instagram activity</h3>
         <p>Concerns regarding who Haley follows may be submitted for immediate processing.</p>
+      </button>
+      <button class="menu-card" data-go="screen-training">
+        <span class="icon">📋</span>
+        <h3>Complete mandatory remedial apology training</h3>
+        <p>Module 1 of 1: Writing an Actual Apology. Enrollment is automatic. Completion, historically, is not.</p>
       </button>
     </div>
   </section>
@@ -518,6 +605,118 @@
     </div>
   </section>
 
+  <!-- ============ APOLOGY TRAINING ============ -->
+  <section class="screen" id="screen-training">
+    <button class="back-link" data-go="screen-menu">← Back to services</button>
+
+    <!-- Intro -->
+    <div class="panel t-panel" id="t-intro">
+      <p class="progress-label">Remedial Apology Training · Module 1 of 1</p>
+      <h2>Writing an Actual Apology</h2>
+      <p class="lede">Welcome, trainee. This module walks you through composing an
+      apology — a written statement in which <strong>you</strong> take responsibility
+      for <strong>your own actions</strong>. If that sentence was surprising, you are
+      in the right place.</p>
+      <ul class="checklist">
+        <li><span class="check">•</span> Estimated completion time: 15 minutes</li>
+        <li><span class="check">•</span> Time elapsed while others waited for this apology: 4 years</li>
+        <li><span class="check">•</span> Prerequisites: none, evidently</li>
+        <li><span class="check">•</span> Materials needed: honesty (not provided)</li>
+      </ul>
+      <button class="btn" data-tgo="t-quiz">Begin Lesson 1</button>
+    </div>
+
+    <!-- Lesson 1: concept quiz -->
+    <div class="panel t-panel" id="t-quiz" style="display:none">
+      <p class="progress-label">Lesson 1 of 4 · Concept Check</p>
+      <h2 id="quiz-question"></h2>
+      <p class="lede">Select the correct answer to proceed. Incorrect answers will
+      receive corrective feedback, which trainees are encouraged to actually read.</p>
+      <div class="choice-list" id="quiz-options"></div>
+      <div class="feedback" id="quiz-feedback" style="display:none"></div>
+      <button class="btn" id="quiz-next" style="display:none">Continue</button>
+    </div>
+
+    <!-- Lesson 2: what I did -->
+    <div class="panel t-panel" id="t-lesson2" style="display:none">
+      <p class="progress-label">Lesson 2 of 4 · Self-Identification of Conduct</p>
+      <h2>What I Did</h2>
+      <p class="lede">In your own words, describe what you did. This module does
+      <strong>not</strong> provide a list. Trainees who cannot recall any conduct are
+      encouraged to sit quietly with the question. There is no time limit. There is
+      also no hint button.</p>
+      <div class="field">
+        <textarea id="t2-text" placeholder="Begin with the word 'I.'"></textarea>
+      </div>
+      <div class="feedback" id="t2-feedback" style="display:none"></div>
+      <button class="btn" id="t2-submit">Submit for review</button>
+      <button class="btn" id="t2-next" style="display:none">Continue to Lesson 3</button>
+    </div>
+
+    <!-- Lesson 3: impact -->
+    <div class="panel t-panel" id="t-lesson3" style="display:none">
+      <p class="progress-label">Lesson 3 of 4 · Impact Statement</p>
+      <h2>How My Actions Affected Haley</h2>
+      <p class="lede">Describe how your actions may have made Haley feel. This section
+      concerns <strong>her experience</strong>, not your intentions. Intent and impact
+      are different lessons; this is the impact one.</p>
+      <div class="field">
+        <textarea id="t3-text" placeholder="Helpful starter vocabulary: hurt, dismissed, disrespected, unimportant."></textarea>
+      </div>
+      <div class="feedback" id="t3-feedback" style="display:none"></div>
+      <button class="btn" id="t3-submit">Submit for review</button>
+      <button class="btn" id="t3-next" style="display:none">Continue to Lesson 4</button>
+    </div>
+
+    <!-- Lesson 4: compose -->
+    <div class="panel t-panel" id="t-compose" style="display:none">
+      <p class="progress-label">Lesson 4 of 4 · Final Composition</p>
+      <h2>The Apology Paragraph</h2>
+      <p class="lede">Combine everything from Lessons 1–3 into one genuine apology
+      paragraph. The rubric below updates as you write. All criteria must be met
+      before grading. The rubric cannot be argued with; it has heard it all.</p>
+      <div class="field">
+        <textarea id="t4-text" rows="7" placeholder="Dear Haley, I am sorry that I…"></textarea>
+      </div>
+      <ul class="rubric" id="rubric"></ul>
+      <button class="btn" id="t4-grade">Submit for grading</button>
+    </div>
+
+    <!-- Grade report -->
+    <div class="panel t-panel" id="t-grade" style="display:none">
+      <p class="progress-label">Assessment Result</p>
+      <h2>Graded Submission</h2>
+      <div class="grade-box"><span id="grade-letter"></span><span id="grade-score"></span></div>
+      <h3 class="redpen-title">Instructor comments:</h3>
+      <ul class="redpen-list" id="redpen"></ul>
+      <div class="feedback bad" id="grade-verdict" style="display:none">Resubmission
+      required. Revise and resubmit. The instructor will wait — she's had practice.</div>
+      <button class="btn" id="grade-revise" style="display:none">Revise submission</button>
+      <button class="btn" id="grade-pass" style="display:none">Collect certificate</button>
+    </div>
+
+    <!-- Certificate -->
+    <div class="t-panel" id="t-cert" style="display:none">
+      <div class="certificate">
+        <p class="cert-eyebrow">Department of Closure · Training Division</p>
+        <h2>Certificate of Completion</h2>
+        <p class="cert-body">This certifies that <strong>The Trainee</strong> has
+        demonstrated — once, in writing, under supervision — the ability to compose
+        an actual apology, including accountability for his own actions, expressed
+        remorse, and a stated plan to do better.</p>
+        <p class="cert-grade">Final grade: <strong>A−</strong> <em>(a perfect score was
+        not available due to the four-year late penalty)</em></p>
+        <p class="cert-fine">This certificate certifies a completed worksheet, not a
+        changed person. Delivery of the apology is not covered by this module and is
+        considered an advanced skill. Certificate does not entitle bearer to lunch,
+        a farewell conversation, or a queue position upgrade.</p>
+      </div>
+      <div style="text-align:center; margin-top:18px">
+        <button class="btn secondary" data-go="screen-menu">Return to services</button>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -531,7 +730,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     // Reset per-screen sub-states so each visit starts fresh
-    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint();
+    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('[data-go]').forEach(el =>
@@ -615,6 +814,229 @@
     document.querySelectorAll('.upload-req').forEach(el => el.classList.remove('done'));
     document.getElementById('partner-submit').disabled = true;
     document.querySelectorAll('#form-girlfriend textarea, #form-partner textarea').forEach(t => t.value = '');
+  }
+
+  // ---- Apology training ----
+  const QUIZ = [
+    {
+      q: 'Q1. An apology is primarily about:',
+      options: [
+        { text: "The other person's tone when they stopped replying",
+          fb: "Incorrect. How someone reacted to your conduct is not the subject of an apology. Please try again." },
+        { text: 'Your own actions and their impact', correct: true },
+        { text: 'Clearing up why you were actually right',
+          fb: 'Incorrect. An apology that explains why you were right is called an argument.' },
+        { text: 'Coordinating logistics for lunch',
+          fb: 'Incorrect. Lunch is not a unit of accountability.' },
+      ],
+    },
+    {
+      q: 'Q2. Which of the following is an actual apology?',
+      options: [
+        { text: '"I\'m sorry you feel that way."',
+          fb: "Incorrect. This sentence relocates your actions into the other person's feelings. It is widely considered the worst sentence in the English language." },
+        { text: '"I\'m sorry, but—"',
+          fb: "Incorrect. The word 'but' erases every word that came before it." },
+        { text: '"You need to grow up."',
+          fb: 'Incorrect. This is the opposite of an apology. Some trainees may recognize it from recent voicemails.' },
+        { text: '"I\'m sorry that I [specific action]. It was wrong because [reason]."', correct: true },
+      ],
+    },
+    {
+      q: 'Q3. Accountability means taking responsibility for:',
+      options: [
+        { text: 'Actions that were witnessed by others',
+          fb: 'Incorrect. Accountability applies even without witnesses, screenshots, or a jury.' },
+        { text: "Actions the other person “misinterpreted”",
+          fb: "Incorrect. “You misinterpreted it” is deflection wearing a tie." },
+        { text: 'Your own actions, including the uncomfortable ones', correct: true },
+        { text: 'Nothing, provided enough reels are sent',
+          fb: 'Incorrect. No quantity of reels converts into an apology. The exchange rate is zero.' },
+      ],
+    },
+  ];
+  let quizIndex = 0;
+
+  function showTrainingPanel(id) {
+    ['t-intro', 't-quiz', 't-lesson2', 't-lesson3', 't-compose', 't-grade', 't-cert']
+      .forEach(p => document.getElementById(p).style.display = (p === id) ? '' : 'none');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('[data-tgo]').forEach(el =>
+    el.addEventListener('click', () => {
+      if (el.dataset.tgo === 't-quiz') renderQuiz();
+      showTrainingPanel(el.dataset.tgo);
+    }));
+
+  function renderQuiz() {
+    const item = QUIZ[quizIndex];
+    document.getElementById('quiz-question').textContent = item.q;
+    const box = document.getElementById('quiz-options');
+    box.innerHTML = '';
+    document.getElementById('quiz-feedback').style.display = 'none';
+    document.getElementById('quiz-next').style.display = 'none';
+    item.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="label"></span>';
+      btn.querySelector('.label').textContent = opt.text;
+      btn.addEventListener('click', () => answerQuiz(btn, opt));
+      box.appendChild(btn);
+    });
+  }
+  function answerQuiz(btn, opt) {
+    const fb = document.getElementById('quiz-feedback');
+    document.querySelectorAll('#quiz-options .choice').forEach(b => b.classList.remove('quiz-wrong'));
+    if (opt.correct) {
+      btn.classList.add('quiz-correct');
+      document.querySelectorAll('#quiz-options .choice').forEach(b => b.disabled = true);
+      fb.className = 'feedback good';
+      fb.textContent = 'Correct. Noted with mild surprise.';
+      fb.style.display = 'block';
+      const next = document.getElementById('quiz-next');
+      next.style.display = 'inline-block';
+      next.textContent = quizIndex < QUIZ.length - 1 ? 'Next question' : 'Continue to Lesson 2';
+    } else {
+      btn.classList.add('quiz-wrong');
+      fb.className = 'feedback bad';
+      fb.textContent = opt.fb;
+      fb.style.display = 'block';
+    }
+  }
+  document.getElementById('quiz-next').addEventListener('click', () => {
+    if (quizIndex < QUIZ.length - 1) {
+      quizIndex++;
+      renderQuiz();
+    } else {
+      showTrainingPanel('t-lesson2');
+    }
+  });
+
+  // Lessons 2 & 3: free-text review. Comments critique the format, never supply the content.
+  function reviewText(text, mode) {
+    const t = ' ' + text.toLowerCase() + ' ';
+    const problems = [];
+    if (text.trim().length < 60)
+      problems.push('Submission too brief. Conduct spanning four (4) years plus twelve (12) days of follow-up cannot be summarized in under sixty characters.');
+    if (/^\s*(she|you|haley)\b/i.test(text))
+      problems.push('Submission begins with someone other than yourself. This lesson is titled "What I Did," not "What She Did."');
+    if (!(mode === 'impact' ? /\b(I|my)\b/i : /\bI\b/).test(text))
+      problems.push('The word "I" does not appear. It is difficult to take accountability without it.');
+    if (t.includes(' but '))
+      problems.push('The word "but" was detected. "But" functions as an eraser for everything written before it.');
+    if (t.includes('jealous'))
+      problems.push('The word "jealous" was detected. Other people’s alleged jealousy is not something you did.');
+    if (t.includes('grow up'))
+      problems.push('"Grow up" detected. Please describe your actions, not your recommendations.');
+    if (/stalker|creepy|weird/.test(t))
+      problems.push('Name-calling detected. Delete it and restart the sentence with the word "I."');
+    if (t.includes('no contact'))
+      problems.push('Her boundaries are not conduct. Yours are the subject of this module.');
+    if (mode === 'impact') {
+      if (/didn'?t mean|my intention|i intended|meant to/.test(t))
+        problems.push('"Intentions" detected. Intent and impact are different lessons. This is the impact one.');
+      if (t.includes('overreact'))
+        problems.push('"Overreact" detected. Grading has been paused while everyone recovers.');
+      if (!/hurt|sad|dismiss|disrespect|unimportant|alone|abandon|unloved|pain|betray|ignor|small|unheard/.test(t))
+        problems.push('No feeling words detected. Helpful starter vocabulary: hurt, dismissed, disrespected, unimportant.');
+    }
+    return problems;
+  }
+  function wireLesson(num, mode, nextPanel) {
+    const submit = document.getElementById(`t${num}-submit`);
+    const next = document.getElementById(`t${num}-next`);
+    const fb = document.getElementById(`t${num}-feedback`);
+    submit.addEventListener('click', () => {
+      const problems = reviewText(document.getElementById(`t${num}-text`).value, mode);
+      fb.style.display = 'block';
+      if (problems.length) {
+        fb.className = 'feedback bad';
+        fb.innerHTML = problems.map(p => `<div>✗ ${p}</div>`).join('');
+        next.style.display = 'none';
+      } else {
+        fb.className = 'feedback good';
+        fb.textContent = 'Accepted for review. Note: acceptance means the submission is in the correct format — not that the conduct was.';
+        submit.style.display = 'none';
+        next.style.display = 'inline-block';
+      }
+    });
+    next.addEventListener('click', () => showTrainingPanel(nextPanel));
+  }
+  wireLesson(2, 'conduct', 't-lesson3');
+  wireLesson(3, 'impact', 't-compose');
+
+  // Lesson 4: live rubric + grading
+  const RUBRIC = [
+    { label: 'Written in the first person', pts: 13,
+      test: t => (t.match(/\bI\b/g) || []).length >= 2,
+      pen: 'The apologizer barely appears in his own apology. The subject of every key sentence is you.' },
+    { label: 'Contains "sorry" or "apologize"', pts: 13,
+      test: t => /sorry|apologi[sz]e/i.test(t),
+      pen: 'The words "sorry" and "apologize" do not appear. This was the entire assignment.' },
+    { label: 'Ownership statement ("I’m sorry that I…" / "I was wrong")', pts: 13,
+      test: t => /sorry (that )?(for )?i\b|i was wrong|i hurt|it was wrong of me/i.test(t),
+      pen: 'Sorry appears, but it is never attached to anything you did. An apology needs a direct object.' },
+    { label: 'Names the impact on Haley (hurt / felt / feel)', pts: 13,
+      test: t => /hurt|felt|feel|pain|dismiss|disrespect/i.test(t),
+      pen: 'The impact on the other person is not mentioned. See Lesson 3, which you passed minutes ago.' },
+    { label: 'Forward commitment ("I will…")', pts: 12,
+      test: t => /i will|i am going to|i'?m going to|i commit|committed to|working on/i.test(t),
+      pen: 'No plan to do better is stated. Remorse without change is just a mood.' },
+    { label: 'Zero instances of "but"', pts: 12,
+      test: t => !/\bbut\b/i.test(t),
+      pen: '"But" detected. Minus the sorry, carry the excuse.' },
+    { label: 'Zero demands on her time (lunch, call, respond, meet, talk)', pts: 12,
+      test: t => !/lunch|call me|text me|respond|write back|meet up|let'?s talk|talk in person/i.test(t),
+      pen: 'An apology does not include an invoice for the recipient’s time.' },
+    { label: 'At least 200 characters of effort', pts: 12,
+      test: t => t.trim().length >= 200,
+      pen: 'Insufficient depth. An apology covering four years of conduct should be longer than a lunch order.' },
+  ];
+  const t4text = document.getElementById('t4-text');
+  function renderRubric() {
+    const t = t4text.value;
+    document.getElementById('rubric').innerHTML = RUBRIC.map(r => {
+      const met = r.test(t);
+      return `<li class="${met ? 'met' : ''}"><span class="mark">${met ? '✓' : '✗'}</span>${r.label}</li>`;
+    }).join('');
+  }
+  t4text.addEventListener('input', renderRubric);
+
+  document.getElementById('t4-grade').addEventListener('click', () => {
+    const t = t4text.value;
+    const failed = RUBRIC.filter(r => !r.test(t));
+    const earned = RUBRIC.filter(r => r.test(t)).reduce((s, r) => s + r.pts, 0);
+    const score = Math.max(0, earned - 3);
+    const pass = failed.length === 0;
+    const letter = pass ? 'A−' : score >= 75 ? 'C' : score >= 50 ? 'D' : 'F';
+    document.getElementById('grade-letter').textContent = letter;
+    document.getElementById('grade-score').textContent =
+      `${score}/100 · includes a −3 point penalty: submitted approximately four (4) years past due`;
+    document.querySelector('.grade-box').classList.toggle('pass', pass);
+    document.getElementById('redpen').innerHTML = pass
+      ? '<li class="praise">A genuine apology, on the first… well, on an attempt. Accountability: present. Remorse: expressed. Plan: stated. See certificate.</li>'
+      : failed.map(r => `<li>${r.pen}</li>`).join('');
+    document.getElementById('grade-verdict').style.display = pass ? 'none' : 'block';
+    document.getElementById('grade-revise').style.display = pass ? 'none' : 'inline-block';
+    document.getElementById('grade-pass').style.display = pass ? 'inline-block' : 'none';
+    showTrainingPanel('t-grade');
+  });
+  document.getElementById('grade-revise').addEventListener('click', () => showTrainingPanel('t-compose'));
+  document.getElementById('grade-pass').addEventListener('click', () => showTrainingPanel('t-cert'));
+
+  function resetTraining() {
+    quizIndex = 0;
+    showTrainingPanel('t-intro');
+    ['t2', 't3', 't4'].forEach(p => {
+      const el = document.getElementById(`${p}-text`);
+      if (el) el.value = '';
+    });
+    ['t2', 't3'].forEach(p => {
+      document.getElementById(`${p}-feedback`).style.display = 'none';
+      document.getElementById(`${p}-submit`).style.display = '';
+      document.getElementById(`${p}-next`).style.display = 'none';
+    });
+    renderRubric();
   }
 
   // ---- Complaint ----
