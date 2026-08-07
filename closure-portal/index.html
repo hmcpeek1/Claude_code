@@ -357,21 +357,6 @@
     cursor: pointer;
   }
 
-  .incident-log {
-    margin: 0 0 8px 20px;
-    font-size: 14.5px;
-  }
-  .incident-log li {
-    padding: 9px 0 9px 6px;
-    border-bottom: 1px solid var(--line);
-  }
-  .incident-log em {
-    display: block;
-    font-size: 13px;
-    color: var(--ink-soft);
-    font-family: Georgia, serif;
-    margin-top: 3px;
-  }
   .finding-text { font-size: 14.5px; margin-bottom: 14px; }
 
   .locked-box {
@@ -856,32 +841,23 @@
 
       <h3 class="form-section">What building a life together actually requires</h3>
       <ul class="checklist">
-        <li><span class="check status-no">✗</span> Emotional monogamy <span class="when status-no">declined — by you</span></li>
-        <li><span class="check status-no">✗</span> Physical monogamy <span class="when status-no">also declined — also by you</span></li>
-        <li><span class="check status-no">✗</span> Consistent presence <span class="when status-no">unavailable; see travel schedule</span></li>
-        <li><span class="check status-no">✗</span> Emotional safety <span class="when status-no">see record of events</span></li>
+        <li><span class="check status-no">✗</span> Emotional monogamy <span class="when status-no">declined, in your own words</span></li>
+        <li><span class="check status-no">✗</span> Physical monogamy <span class="when status-no">declined, in your own words</span></li>
+        <li><span class="check status-no">✗</span> A defined, committed relationship <span class="when status-no">declined</span></li>
+        <li><span class="check status-no">✗</span> A plan to change any of the above <span class="when status-no">not on file</span></li>
       </ul>
 
-      <h3 class="form-section">Record of events — the most recent three-week trip to Asia</h3>
-      <ol class="incident-log">
-        <li>You announced you could not commit to emotional or physical monogamy. <em>For the record: this is the opposite of building a life with someone.</em></li>
-        <li>You posted story content of models and bikini-clad companions on boats, all day, every day. <em>Publicly. To an audience that included the person you were allegedly building a life with.</em></li>
-        <li>You texted: "I hope you're not jealous or getting the wrong idea. It's a work trip." <em>First documented work trip conducted from a boat of bikinis.</em></li>
-        <li>The girls from the gym joined the next leg of the trip. Their story content, featuring you, was broadcast publicly. <em>No investigation was required; the evidence posted itself in real time.</em></li>
-        <li>You told her to go find another man. <em>The relationship ended here. By your word, not hers.</em></li>
-        <li>You then complained that a life was never built together. <em>See determination below.</em></li>
-      </ol>
-
       <h3 class="form-section">Determination</h3>
-      <p class="finding-text">A life together is made of commitment, presence, and
-      safety, offered consistently over time. None of these were offered — and their
-      absence was posted publicly, in real time, with captions. Sharing content you
-      know will hurt someone who loves you, then pre-blaming her for reacting to it,
-      is not building a life together. It is the reason there isn't one.</p>
+      <p class="finding-text">The Department requires no timeline and no exhibits.
+      One fact is sufficient, and it is yours: you stated you could not commit to
+      emotional or physical monogamy. A life together is built from exactly that
+      commitment, offered consistently over time. It was declined — so a life was
+      not built. These are the same event, described twice.</p>
       <p class="finding-text">The Department further notes the stated goals on
-      file — a serious relationship, a wife, a family — and observes that at
-      forty-four (44) years of age, the gap between the stated goals and the posted
-      content can no longer be attributed to youth.</p>
+      file — a serious relationship, a wife, a family — and observes that no
+      mechanism exists by which those goals are reached while their one
+      prerequisite is declined. This is not a scheduling problem, and more time
+      will not resolve it.</p>
       <div class="notice"><strong>Ruling:</strong> the complaint "we just haven't
       built a life together" is hereby reclassified from <em>grievance</em> to
       <em>confession</em>, and closed.</div>
@@ -1509,7 +1485,7 @@
   document.getElementById('life-refile').addEventListener('click', () => {
     refileCount++;
     document.getElementById('life-refile-count').textContent =
-      `Complaint refiled. Findings unchanged. (Filed ${refileCount} times this visit. The review does not re-run; the trip already happened.)`;
+      `Complaint refiled. Findings unchanged. (Filed ${refileCount} times this visit. The facts on file are yours; refiling does not amend them.)`;
   });
   function resetLife() {
     refileCount = 1;
