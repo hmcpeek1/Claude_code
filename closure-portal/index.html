@@ -566,6 +566,16 @@
         <span class="t-body"><strong>Module 2 — Understanding Emotional &amp; Physical Monogamy</strong>
         Two terms that have historically been used loosely, defined at last.</span>
       </button>
+      <button class="training-link" data-mod="safety">
+        <span class="t-icon">🛟</span>
+        <span class="t-body"><strong>Module 3 — Understanding Emotional Safety</strong>
+        What it means for a partner to feel safe bringing you her hurt.</span>
+      </button>
+      <button class="training-link" data-mod="trust">
+        <span class="t-icon">🧱</span>
+        <span class="t-body"><strong>Module 4 — Rebuilding Trust After Betrayal &amp; Broken Trust</strong>
+        How trust is actually rebuilt, and how it is permanently ended.</span>
+      </button>
     </div>
   </section>
 
@@ -1022,7 +1032,7 @@
 
     <!-- Intro -->
     <div class="panel t-panel" id="t-intro">
-      <p class="progress-label">Remedial Apology Training · Module 1 of 2</p>
+      <p class="progress-label">Remedial Apology Training · Module 1 of 4</p>
       <h2>Writing an Actual Apology</h2>
       <p class="lede">Welcome, trainee. This module walks you through composing an
       apology — a written statement in which <strong>you</strong> take responsibility
@@ -1148,7 +1158,7 @@
     <button class="back-link" data-go="screen-menu">← Back to services</button>
 
     <div class="panel" id="m-intro">
-      <p class="progress-label">Remedial Monogamy Training · Module 2 of 2</p>
+      <p class="progress-label">Remedial Monogamy Training · Module 2 of 4</p>
       <h2>Understanding Emotional &amp; Physical Monogamy</h2>
       <p class="lede">This module defines two terms that have historically been used
       loosely. There are seven (7) questions. All must be answered correctly.
@@ -1178,6 +1188,34 @@
     </div>
   </section>
 
+  <!-- ============ GENERIC QUIZ MODULES (3 & 4) ============ -->
+  <section class="screen" id="screen-quizmod">
+    <button class="back-link" data-go="screen-menu">← Back to services</button>
+
+    <div class="panel" id="qm-intro">
+      <p class="progress-label" id="qm-eyebrow"></p>
+      <h2 id="qm-title"></h2>
+      <p class="lede" id="qm-lede"></p>
+      <button class="btn" id="qm-begin">Begin</button>
+    </div>
+
+    <div class="panel" id="qm-quiz" style="display:none">
+      <p class="progress-label" id="qm-progress"></p>
+      <h2 id="qm-question"></h2>
+      <div class="choice-list" id="qm-options"></div>
+      <div class="feedback" id="qm-feedback" style="display:none"></div>
+      <button class="btn" id="qm-next" style="display:none">Continue</button>
+    </div>
+
+    <div class="receipt" id="qm-complete" style="display:none">
+      <h3 id="qm-complete-title">Module complete ✓</h3>
+      <p id="qm-complete-text"></p>
+      <p class="meta">This certifies a completed module, not a completed person.
+      Understanding is expected to persist considerably longer than this visit.</p>
+      <button class="btn secondary" data-go="screen-menu">Return to services</button>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -1191,7 +1229,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     // Reset per-screen sub-states so each visit starts fresh
-    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy(); resetLife();
+    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy(); resetLife(); resetQuizMod();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('[data-go]').forEach(el =>
@@ -1390,6 +1428,184 @@
       mIndex = 0;
       showMPanel('m-intro');
     }
+  }
+
+  // Generic self-paced quiz modules (Module 3 & 4). Data-driven; no gating.
+  const QUIZ_MODULES = {
+    safety: {
+      eyebrow: 'Remedial Emotional Safety Training · Module 3 of 4',
+      title: 'Understanding Emotional Safety',
+      lede: 'This module covers what it means for a partner to feel emotionally safe. There are seven (7) questions. All must be answered correctly. Guessing is permitted but will be obvious.',
+      completeTitle: 'Module 3 complete ✓',
+      completeText: 'You have completed Understanding Emotional Safety. Summary: a partner should be able to bring you her hurt without it becoming her fault. Per our records, this was not the experience.',
+      questions: [
+        { q: 'Q1. Emotional safety in a relationship means:', options: [
+          { text: 'Never disagreeing about anything', fb: 'Incorrect. Safety is not the absence of conflict; it is safety during it.' },
+          { text: 'Being able to express hurt or a need without being punished, mocked, or blamed', correct: true },
+          { text: 'Always getting your way', fb: 'Incorrect. That is not safety; that is a monologue.' },
+          { text: 'Never having a hard conversation', fb: 'Incorrect. Avoided conversations make no one safer. See: this entire portal.' },
+        ] },
+        { q: 'Q2. Your partner says she felt unsafe about something you did. The response that builds safety is:', options: [
+          { text: '"That is ridiculous."', fb: 'Incorrect. Calling a feeling ridiculous is how you make it unsafe to tell you things.' },
+          { text: '"You are too sensitive."', fb: 'Incorrect. "Too sensitive" is what people say right before losing the person.' },
+          { text: 'Take it seriously and change the behavior', correct: true },
+          { text: 'Explain why she is wrong to feel that way', fb: 'Incorrect. A feeling is not a debate you can win.' },
+        ] },
+        { q: 'Q3. A partner feels emotionally safe when your behavior is:', options: [
+          { text: 'Exciting and unpredictable', fb: 'Incorrect. Unpredictable is thrilling in a trailer and exhausting in a relationship.' },
+          { text: 'Consistent and predictable, so she is not bracing for the next surprise', correct: true },
+          { text: 'Mysterious', fb: 'Incorrect. Mystery is for novels, not for whether you are on the apps again.' },
+          { text: 'Different every day', fb: 'Incorrect. She should not need a weather report for your mood.' },
+        ] },
+        { q: 'Q4. Calling a partner cold, crazy, or a stalker for reacting to your actions:', options: [
+          { text: 'Is honest feedback', fb: 'Incorrect. A label is not feedback.' },
+          { text: 'Erodes emotional safety and shifts blame onto her', correct: true },
+          { text: 'Is just playful', fb: 'Incorrect. It did not read as playful. It never does.' },
+          { text: 'Helps her grow', fb: 'Incorrect. No one grows from being called names by someone they love.' },
+        ] },
+        { q: 'Q5. When someone you love says you hurt them, emotional safety requires that you:', options: [
+          { text: 'Defend yourself first', fb: 'Incorrect. Defense first means she comes second.' },
+          { text: 'Win the exchange', fb: 'Incorrect. There is no winner; there is only whether she felt heard.' },
+          { text: 'Let her be heard without turning it around on her', correct: true },
+          { text: 'Immediately bring up her flaws', fb: 'Incorrect. "But you also—" is the sound of safety leaving the room.' },
+        ] },
+        { q: 'Q6. "I hope you are not getting jealous," said before doing something you know will hurt her, is:', options: [
+          { text: 'A considerate heads-up', fb: 'Incorrect. A heads-up would be not doing the thing.' },
+          { text: 'Pre-blaming her for reacting to your own choice', correct: true },
+          { text: 'A way of protecting her feelings', fb: 'Incorrect. It protects you, in advance, from her feelings.' },
+          { text: 'Emotionally generous', fb: 'Incorrect. Generosity does not come with a disclaimer.' },
+        ] },
+        { q: 'Q7. Emotional safety is built primarily through:', options: [
+          { text: 'Grand gestures', fb: 'Incorrect. Gestures are a highlight reel; safety is the daily footage.' },
+          { text: 'Consistent, trustworthy behavior over time', correct: true },
+          { text: 'Expensive gifts from Asia', fb: 'Incorrect. The gift from Asia is noted and does not count.' },
+          { text: 'Saying "trust me"', fb: 'Incorrect. "Trust me" is not a deposit; it is a request for a loan.' },
+        ] },
+      ],
+    },
+    trust: {
+      eyebrow: 'Remedial Trust Training · Module 4 of 4',
+      title: 'Rebuilding Trust After Betrayal & Broken Trust',
+      lede: 'This module covers how trust is actually rebuilt after it is broken — and how it is permanently ended. There are seven (7) questions. All must be answered correctly.',
+      completeTitle: 'Module 4 complete ✓',
+      completeText: 'You have completed Rebuilding Trust After Betrayal. Summary: trust returns through changed behavior over time, on her timeline — not through promises, gifts, or a lunch before Shelter Island.',
+      questions: [
+        { q: 'Q1. After trust is broken, it is rebuilt primarily by:', options: [
+          { text: 'One heartfelt apology', fb: 'Incorrect. An apology opens the door; it does not walk through it.' },
+          { text: 'Sustained, consistent changed behavior over time', correct: true },
+          { text: 'Promising it will not happen again', fb: 'Incorrect. Promises are the currency that already lost its value here.' },
+          { text: 'Reminding her of the good times', fb: 'Incorrect. The good times are not collateral against the broken trust.' },
+        ] },
+        { q: 'Q2. The timeline for rebuilding trust is set by:', options: [
+          { text: 'The person who broke it', fb: 'Incorrect. The one who broke it does not get to run the clock.' },
+          { text: 'The person whose trust was broken', correct: true },
+          { text: 'A fixed two-week cooling-off period', fb: 'Incorrect. Trust is not a return policy.' },
+          { text: 'Whoever gets tired of the conversation first', fb: 'Incorrect. Exhaustion is not resolution.' },
+        ] },
+        { q: 'Q3. When the same trust has been broken more than once (for example, the dating apps), rebuilding requires:', options: [
+          { text: 'One more promise, said more sincerely', fb: 'Incorrect. The number of promises is not the problem. The pattern is.' },
+          { text: 'Acknowledging the pattern and changing it without being monitored', correct: true },
+          { text: 'Pointing out that you are not that bad', fb: 'Incorrect. "Not that bad" is not a standard anyone builds a life on.' },
+          { text: 'Being hurt that she still does not trust you', fb: 'Incorrect. Her caution is a consequence, not an insult.' },
+        ] },
+        { q: 'Q4. A partner who is still cautious after being betrayed is:', options: [
+          { text: 'Holding a grudge', fb: 'Incorrect. Caution after a breach is not a grudge; it is memory.' },
+          { text: 'Responding normally to a real breach of trust', correct: true },
+          { text: 'Being unfair to you', fb: 'Incorrect. The unfair part already happened, earlier, to her.' },
+          { text: 'Trying to manipulate you', fb: 'Incorrect. Self-protection is not manipulation.' },
+        ] },
+        { q: 'Q5. Which of these actually rebuilds trust?', options: [
+          { text: 'Deleting the app icon while keeping the account', fb: 'Incorrect. The Department has covered this. The account is the thing.' },
+          { text: 'Transparency you offer before being asked', correct: true },
+          { text: 'Getting defensive when questioned', fb: 'Incorrect. Defensiveness reads as something to defend.' },
+          { text: 'Insisting she just move on', fb: 'Incorrect. "Move on" is a demand, and demands rebuild nothing.' },
+        ] },
+        { q: 'Q6. Demanding forgiveness, lunch, or a farewell conversation on your schedule:', options: [
+          { text: 'Speeds up trust', fb: 'Incorrect. Nothing about trust is sped up by a deadline you set.' },
+          { text: 'Ignores that repair happens on her terms, not yours', correct: true },
+          { text: 'Shows healthy initiative', fb: 'Incorrect. Initiative aimed at your own timeline is just pressure.' },
+          { text: 'Is romantic', fb: 'Incorrect. A summons is not a romance.' },
+        ] },
+        { q: 'Q7. The most reliable way to end trust permanently is:', options: [
+          { text: 'One honest mistake', fb: 'Incorrect. Honest mistakes are survivable. That is rather the point.' },
+          { text: 'Repeating the same betrayal after promising to change', correct: true },
+          { text: 'A single disagreement', fb: 'Incorrect. Disagreements are normal; repeated betrayal is not.' },
+          { text: 'Taking space to think', fb: 'Incorrect. Space is healthy. This is not the answer.' },
+        ] },
+      ],
+    },
+  };
+  const quizDone = {};
+  let qmActive = null, qmIndex = 0;
+
+  function showQMPanel(id) {
+    ['qm-intro', 'qm-quiz', 'qm-complete'].forEach(p =>
+      document.getElementById(p).style.display = (p === id) ? (p === 'qm-complete' ? 'block' : '') : 'none');
+  }
+  function openQuizModule(id) {
+    qmActive = id;
+    qmIndex = 0;
+    const m = QUIZ_MODULES[id];
+    document.getElementById('qm-eyebrow').textContent = m.eyebrow;
+    document.getElementById('qm-title').textContent = m.title;
+    document.getElementById('qm-lede').textContent = m.lede;
+    document.getElementById('qm-complete-title').textContent = m.completeTitle;
+    document.getElementById('qm-complete-text').textContent = m.completeText;
+    show('screen-quizmod');
+    showQMPanel(quizDone[id] ? 'qm-complete' : 'qm-intro');
+  }
+  function renderQM() {
+    const m = QUIZ_MODULES[qmActive];
+    const item = m.questions[qmIndex];
+    document.getElementById('qm-progress').textContent = `Question ${qmIndex + 1} of ${m.questions.length}`;
+    document.getElementById('qm-question').textContent = item.q;
+    const box = document.getElementById('qm-options');
+    box.innerHTML = '';
+    document.getElementById('qm-feedback').style.display = 'none';
+    document.getElementById('qm-next').style.display = 'none';
+    item.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="label"></span>';
+      btn.querySelector('.label').textContent = opt.text;
+      btn.addEventListener('click', () => {
+        const fb = document.getElementById('qm-feedback');
+        if (opt.correct) {
+          btn.classList.add('quiz-correct');
+          box.querySelectorAll('.choice').forEach(b => b.disabled = true);
+          fb.className = 'feedback good';
+          fb.textContent = 'Correct.';
+          fb.style.display = 'block';
+          const next = document.getElementById('qm-next');
+          next.style.display = 'inline-block';
+          next.textContent = qmIndex < m.questions.length - 1 ? 'Next question' : 'Complete module';
+        } else {
+          btn.classList.add('quiz-wrong');
+          fb.className = 'feedback bad';
+          fb.textContent = opt.fb;
+          fb.style.display = 'block';
+        }
+      });
+      box.appendChild(btn);
+    });
+  }
+  document.getElementById('qm-begin').addEventListener('click', () => { renderQM(); showQMPanel('qm-quiz'); });
+  document.getElementById('qm-next').addEventListener('click', () => {
+    const m = QUIZ_MODULES[qmActive];
+    if (qmIndex < m.questions.length - 1) {
+      qmIndex++;
+      renderQM();
+    } else {
+      quizDone[qmActive] = true;
+      showQMPanel('qm-complete');
+    }
+  });
+  document.querySelectorAll('[data-mod]').forEach(b =>
+    b.addEventListener('click', () => openQuizModule(b.dataset.mod)));
+  function resetQuizMod() {
+    qmIndex = 0;
+    if (qmActive && quizDone[qmActive]) showQMPanel('qm-complete');
+    else showQMPanel('qm-intro');
   }
 
   // Life partner application: rendered from data, 33 items, all required
