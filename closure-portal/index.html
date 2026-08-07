@@ -264,6 +264,17 @@
     border-radius: 5px;
   }
 
+  .choice.mood.selected { border-color: var(--accent); background: var(--accent-soft); }
+  .roadmap-title {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    margin: 30px 0 4px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .status-no { color: var(--deny); font-style: normal; font-weight: 600; }
+  .status-yes { color: var(--ok); font-style: normal; font-weight: 600; }
+
   .progress-label {
     font-size: 11.5px;
     text-transform: uppercase;
@@ -401,6 +412,16 @@
         <span class="icon">📋</span>
         <h3>Complete mandatory remedial apology training</h3>
         <p>Module 1 of 1: Writing an Actual Apology. Enrollment is automatic. Completion, historically, is not.</p>
+      </button>
+      <button class="menu-card" data-go="screen-feelings">
+        <span class="icon">🎭</span>
+        <h3>Need to lash out? Feeling sad?</h3>
+        <p>Submit angry, aggressive, or sad communications here for appropriate routing. All feelings accepted. All delivery methods reviewed.</p>
+      </button>
+      <button class="menu-card" data-go="screen-feature">
+        <span class="icon">💡</span>
+        <h3>Request a feature</h3>
+        <p>Hoping to reach out in a way you don't see supported? Submit a request and our team will review. Check back periodically for updates.</p>
       </button>
     </div>
   </section>
@@ -605,6 +626,85 @@
     </div>
   </section>
 
+  <!-- ============ EMOTIONAL INTAKE ============ -->
+  <section class="screen" id="screen-feelings">
+    <button class="back-link" data-go="screen-menu">← Back to services</button>
+    <div class="panel" id="feelings-form">
+      <h2>Emotional Correspondence Intake</h2>
+      <p class="lede">Need to lash out? Feeling sad? Submit any angry, aggressive, or
+      sad communication below. All feelings are accepted here — a meaningful upgrade
+      over sending them to Haley's phone at midnight.</p>
+      <div class="field">
+        <label>Type of communication</label>
+        <div class="choice-list" id="mood-list">
+          <button class="choice mood" data-mood="angry"><span class="label">Angry</span><span class="desc">Includes: accusations, "you're so cold," anything in all caps.</span></button>
+          <button class="choice mood" data-mood="aggressive"><span class="label">Aggressive</span><span class="desc">Includes: demands, ultimatums, instructions to grow up.</span></button>
+          <button class="choice mood" data-mood="sad"><span class="label">Sad</span><span class="desc">Includes: genuine sadness. It happens to everyone.</span></button>
+          <button class="choice mood" data-mood="blend"><span class="label">A confusing blend</span><span class="desc">Angry-sad with a photo attached, sent at 6am.</span></button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Your communication <span class="hint">(length unlimited — truly, take as long as you need)</span></label>
+        <textarea id="feelings-text" rows="6" placeholder="Type it all out. Every word. Get it out of your system and into ours."></textarea>
+      </div>
+      <button class="btn" id="feelings-submit">Submit for routing</button>
+    </div>
+
+    <div class="receipt" id="feelings-receipt" style="display:none">
+      <h3>Received and routed ✓</h3>
+      <p id="feelings-mood-line"></p>
+      <p>Your submission has been logged with the <strong>Department of Feelings That
+      Are Real but Not Haley's Job</strong>. Your feelings are valid. Your delivery
+      method was the problem, which is why it now ends here.</p>
+      <p>Please note: your subscription to Haley's emotional labor expired after
+      four (4) years of heavy usage and is not eligible for renewal.</p>
+      <p class="meta">For urgent processing, contact a licensed therapist. The portal
+      notes this is at least the third time it has suggested this.</p>
+      <button class="btn secondary" data-go="screen-menu" style="margin-top:14px">Return to services</button>
+    </div>
+  </section>
+
+  <!-- ============ FEATURE REQUESTS ============ -->
+  <section class="screen" id="screen-feature">
+    <button class="back-link" data-go="screen-menu">← Back to services</button>
+    <div class="panel" id="feature-form">
+      <h2>Feature Requests</h2>
+      <p class="lede">Hoping to reach out in a way you don't see supported? Submit a
+      request below and our team will review it. Check back periodically for updates.</p>
+      <div class="field">
+        <label>Requested contact method</label>
+        <input type="text" id="feature-name" placeholder="e.g., carrier pigeon, mutual friend relay, showing up unannounced">
+      </div>
+      <div class="field">
+        <label>Business justification <span class="hint">(why the six existing services are insufficient for your needs)</span></label>
+        <textarea id="feature-text" placeholder="Explain what this method would accomplish that a genuine apology would not."></textarea>
+      </div>
+      <button class="btn" id="feature-submit">Submit request</button>
+
+      <h3 class="roadmap-title">Current roadmap — previously reviewed requests</h3>
+      <ul class="checklist">
+        <li>Voicemails demanding lunch <span class="when status-no">Declined</span></li>
+        <li>Unsolicited reel delivery <span class="when status-no">Deprecated — see Content Submission Center</span></li>
+        <li>"Just checking in" texts <span class="when status-no">Not planned</span></li>
+        <li>Angry messages about jealousy <span class="when status-no">Not planned</span></li>
+        <li>Showing up in person <span class="when status-no">Permanently declined</span></li>
+        <li>A genuine apology <span class="when status-yes">Supported! See Remedial Apology Training</span></li>
+      </ul>
+    </div>
+
+    <div class="receipt" id="feature-receipt" style="display:none">
+      <h3>Request logged ✓</h3>
+      <p>Thank you! Your request has been added to the review queue as
+      <strong>ticket #4,213</strong>. Our team (Haley) will evaluate it during the
+      next planning cycle (there is no next planning cycle).</p>
+      <p><strong>Current status:</strong> Not planned.</p>
+      <p class="meta">Check back periodically for updates. Updates will not occur.
+      Status inquiries do not affect status. Repeated status inquiries are themselves
+      logged, under a different form.</p>
+      <button class="btn secondary" data-go="screen-menu" style="margin-top:14px">Return to services</button>
+    </div>
+  </section>
+
   <!-- ============ APOLOGY TRAINING ============ -->
   <section class="screen" id="screen-training">
     <button class="back-link" data-go="screen-menu">← Back to services</button>
@@ -730,7 +830,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     // Reset per-screen sub-states so each visit starts fresh
-    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining();
+    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('[data-go]').forEach(el =>
@@ -814,6 +914,46 @@
     document.querySelectorAll('.upload-req').forEach(el => el.classList.remove('done'));
     document.getElementById('partner-submit').disabled = true;
     document.querySelectorAll('#form-girlfriend textarea, #form-partner textarea').forEach(t => t.value = '');
+  }
+
+  // ---- Emotional intake ----
+  const MOOD_LINES = {
+    angry: 'Anger received. It has been weighed and determined to be about you, not her.',
+    aggressive: 'Aggressive content is automatically forwarded to the trash, which does not have feelings and cannot be hurt. Unlike some recipients.',
+    sad: 'Sadness received. This one is real — and it is still not hers to fix. It would, however, make excellent material for Lesson 3 of the training module.',
+    blend: 'A confusing blend: consistent with the previous twelve (12) days of submissions. Pattern noted.',
+    none: 'Uncategorized feelings received. Categorizing them is a great first step — the training module can help.',
+  };
+  let selectedMood = 'none';
+  document.querySelectorAll('.mood').forEach(btn =>
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mood').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedMood = btn.dataset.mood;
+    }));
+  document.getElementById('feelings-submit').addEventListener('click', () => {
+    document.getElementById('feelings-mood-line').textContent = MOOD_LINES[selectedMood];
+    document.getElementById('feelings-form').style.display = 'none';
+    document.getElementById('feelings-receipt').style.display = 'block';
+  });
+  function resetFeelings() {
+    selectedMood = 'none';
+    document.querySelectorAll('.mood').forEach(b => b.classList.remove('selected'));
+    document.getElementById('feelings-text').value = '';
+    document.getElementById('feelings-form').style.display = '';
+    document.getElementById('feelings-receipt').style.display = 'none';
+  }
+
+  // ---- Feature requests ----
+  document.getElementById('feature-submit').addEventListener('click', () => {
+    document.getElementById('feature-form').style.display = 'none';
+    document.getElementById('feature-receipt').style.display = 'block';
+  });
+  function resetFeature() {
+    document.getElementById('feature-name').value = '';
+    document.getElementById('feature-text').value = '';
+    document.getElementById('feature-form').style.display = '';
+    document.getElementById('feature-receipt').style.display = 'none';
   }
 
   // ---- Apology training ----
