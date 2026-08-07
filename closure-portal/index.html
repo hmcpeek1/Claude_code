@@ -309,6 +309,16 @@
   .status-no { color: var(--deny); font-style: normal; font-weight: 600; }
   .status-yes { color: var(--ok); font-style: normal; font-weight: 600; }
 
+  .locked-box {
+    border: 2px dashed var(--line);
+    border-radius: 12px;
+    padding: 20px 22px;
+    background: #f2f0ea;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .locked-box p { margin-bottom: 14px; }
+
   .reflect {
     border: 1px solid var(--line);
     border-radius: 12px;
@@ -473,7 +483,12 @@
       <button class="menu-card" data-go="screen-training">
         <span class="icon">📋</span>
         <h3>Complete mandatory remedial apology training</h3>
-        <p>Module 1 of 1: Writing an Actual Apology. Enrollment is automatic. Completion, historically, is not.</p>
+        <p>Module 1 of 2: Writing an Actual Apology. Enrollment is automatic. Completion, historically, is not.</p>
+      </button>
+      <button class="menu-card" data-go="screen-monogamy">
+        <span class="icon">💞</span>
+        <h3>Complete remedial monogamy training</h3>
+        <p>Module 2 of 2: Understanding Emotional and Physical Monogamy. Required to unlock Section D of the Girlfriend Application.</p>
       </button>
       <button class="menu-card" data-go="screen-feelings">
         <span class="icon">🎭</span>
@@ -651,6 +666,31 @@
         <label class="declare"><input type="checkbox" class="gf-check"> I understand that "I want to see other people" and a girlfriend application are conflicting filings.</label>
       </div>
 
+      <h3 class="form-section">Section D — Monogamy Definition &amp; Agreement</h3>
+      <div class="locked-box" id="gf-secD-locked">
+        <p>🔒 <strong>This section is locked.</strong> Definitions of emotional and
+        physical monogamy are no longer accepted from applicants who have not
+        completed <strong>Remedial Monogamy Training</strong> (Module 2, main menu).
+        The Department has read enough improvised definitions.</p>
+        <button class="btn secondary" id="gf-goto-monogamy">Go to Remedial Monogamy Training</button>
+      </div>
+      <div id="gf-secD" style="display:none">
+        <p class="lp-note">Training token verified. Proceed.</p>
+        <div class="field">
+          <label>D1. Define emotional monogamy, in your own words, as it will apply to this relationship <span class="hint">(definitions are binding; see agreement below)</span></label>
+          <textarea class="gf-req" placeholder="You just passed a module on this. Use it."></textarea>
+        </div>
+        <div class="field">
+          <label>D2. Define physical monogamy, in your own words <span class="hint">(if your definition contains "but," "technically," or "depends," delete it and restart)</span></label>
+          <textarea class="gf-req" placeholder="All locations. Including islands."></textarea>
+        </div>
+        <div class="field">
+          <label>D3. Agreement <span class="hint">(both required)</span></label>
+          <label class="declare"><input type="checkbox" class="gf-check"> I agree to emotional monogamy as defined above, effective immediately, in all locations, including islands.</label>
+          <label class="declare"><input type="checkbox" class="gf-check"> I agree to physical monogamy as defined above, with no retroactive amendments.</label>
+        </div>
+      </div>
+
       <p class="completeness" id="gf-progress"></p>
       <button class="btn" id="girlfriend-submit" disabled>Submit application</button>
     </div>
@@ -799,7 +839,7 @@
 
     <!-- Intro -->
     <div class="panel t-panel" id="t-intro">
-      <p class="progress-label">Remedial Apology Training · Module 1 of 1</p>
+      <p class="progress-label">Remedial Apology Training · Module 1 of 2</p>
       <h2>Writing an Actual Apology</h2>
       <p class="lede">Welcome, trainee. This module walks you through composing an
       apology — a written statement in which <strong>you</strong> take responsibility
@@ -914,6 +954,42 @@
     </div>
   </section>
 
+  <!-- ============ MONOGAMY TRAINING ============ -->
+  <section class="screen" id="screen-monogamy">
+    <button class="back-link" data-go="screen-menu">← Back to services</button>
+
+    <div class="panel" id="m-intro">
+      <p class="progress-label">Remedial Monogamy Training · Module 2 of 2</p>
+      <h2>Understanding Emotional &amp; Physical Monogamy</h2>
+      <p class="lede">This module defines two terms that have historically been used
+      loosely. Passing unlocks Section D of the Girlfriend Application, where you
+      will define and agree to both. There are seven (7) questions. All must be
+      answered correctly. Guessing is permitted but will be obvious.</p>
+      <button class="btn" id="m-begin">Begin</button>
+    </div>
+
+    <div class="panel" id="m-quiz" style="display:none">
+      <p class="progress-label" id="m-progress"></p>
+      <h2 id="m-question"></h2>
+      <div class="choice-list" id="m-options"></div>
+      <div class="feedback" id="m-feedback" style="display:none"></div>
+      <button class="btn" id="m-next" style="display:none">Continue</button>
+    </div>
+
+    <div class="receipt" id="m-complete" style="display:none">
+      <h3>Module 2 complete ✓</h3>
+      <p>A completion token has been added to your file. <strong>Section D of the
+      Girlfriend Application — Monogamy Definition &amp; Agreement — is now
+      unlocked.</strong></p>
+      <p>Summary of what you just demonstrated you understand: both forms of
+      monogamy, together, in all locations, with no retroactive amendments.</p>
+      <p class="meta">Token persists for this visit. Understanding is expected to
+      persist considerably longer.</p>
+      <button class="btn" id="m-goto-gf" style="margin-top:6px">Proceed to the Girlfriend Application</button>
+      <button class="btn secondary" data-go="screen-menu" style="margin-top:6px">Return to services</button>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -927,7 +1003,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     // Reset per-screen sub-states so each visit starts fresh
-    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature();
+    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('[data-go]').forEach(el =>
@@ -997,8 +1073,11 @@
   document.getElementById('girlfriend-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
   document.getElementById('partner-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
 
-  // Girlfriend application: every field required before the button unlocks
+  // Girlfriend application: every field required before the button unlocks.
+  // Section D stays locked until Remedial Monogamy Training is complete.
   function updateGF() {
+    document.getElementById('gf-secD').style.display = monogamyComplete ? '' : 'none';
+    document.getElementById('gf-secD-locked').style.display = monogamyComplete ? 'none' : '';
     const texts = [...document.querySelectorAll('#form-girlfriend .gf-req')];
     const checks = [...document.querySelectorAll('#form-girlfriend .gf-check')];
     const select = document.getElementById('gf-appcount');
@@ -1007,13 +1086,117 @@
       + checks.filter(c => c.checked).length
       + (select.value ? 1 : 0);
     const total = texts.length + checks.length + 1;
-    document.getElementById('gf-progress').textContent =
-      `Application completeness: ${done} of ${total} items` +
-      (done < total ? ' — the form knows which ones you skipped.' : '. Noted, with mild surprise.');
+    let msg = `Application completeness: ${done} of ${total} items`;
+    if (done >= total) msg += '. Noted, with mild surprise.';
+    else if (!monogamyComplete) msg += ' — Section D is locked pending Remedial Monogamy Training.';
+    else msg += ' — the form knows which ones you skipped.';
+    document.getElementById('gf-progress').textContent = msg;
     document.getElementById('girlfriend-submit').disabled = done < total;
   }
   document.getElementById('form-girlfriend').addEventListener('input', updateGF);
   document.getElementById('form-girlfriend').addEventListener('change', updateGF);
+  document.getElementById('gf-goto-monogamy').addEventListener('click', () => show('screen-monogamy'));
+
+  // Monogamy training: 7 questions, all must be answered correctly.
+  // The completion token survives navigation (resets only on page reload).
+  let monogamyComplete = false;
+  let mIndex = 0;
+  const MQUIZ = [
+    { q: 'Q1. Physical monogamy means:', options: [
+      { text: 'Physical exclusivity with your partner', correct: true },
+      { text: 'Physical exclusivity, unless traveling', fb: 'Incorrect. Geography does not suspend commitment. This includes islands.' },
+      { text: 'Exclusivity, with exceptions negotiated retroactively', fb: 'Incorrect. Retroactive negotiation is simply called "getting caught."' },
+      { text: 'A vibe', fb: 'Incorrect. It is a commitment, which is a more specific kind of vibe.' },
+    ] },
+    { q: 'Q2. Emotional monogamy means:', options: [
+      { text: 'Only feeling one emotion', fb: 'Incorrect, though it would explain a great deal.' },
+      { text: 'Reserving romantic emotional intimacy for your partner', correct: true },
+      { text: "Feelings don't count if nothing physical happened", fb: 'Incorrect. "Nothing happened" is a physical claim. Emotional monogamy is the other one.' },
+      { text: 'Not applicable if the relationship was never labeled', fb: 'Incorrect. Four years is a label, whether or not it was said out loud.' },
+    ] },
+    { q: 'Q3. Dating apps, while in a committed relationship, are:', options: [
+      { text: 'Research', fb: 'Incorrect. There is no thesis.' },
+      { text: 'Networking', fb: 'Incorrect. LinkedIn is networking. Hinge is not.' },
+      { text: 'Incompatible with both forms of monogamy', correct: true },
+      { text: 'Fine if the profile says "just here for friends"', fb: 'Incorrect. No one is on there for friends — least of all the profiles that say so.' },
+    ] },
+    { q: 'Q4. True or false: emotional and physical monogamy are a package deal in a committed relationship.', options: [
+      { text: 'True', correct: true },
+      { text: 'False', fb: 'Incorrect. Offering one without the other is called a situationship, and the Department maintains an entire screen about those.' },
+    ] },
+    { q: 'Q5. True or false: telling your partner to "go find another man" is consistent with monogamy.', options: [
+      { text: 'True', fb: 'Incorrect. It is consistent with a breakup, which is what it produced.' },
+      { text: 'False', correct: true },
+    ] },
+    { q: 'Q6. True or false: monogamy is re-committed to daily, not announced once and considered handled.', options: [
+      { text: 'True', correct: true },
+      { text: 'False', fb: 'Incorrect. It is a practice, not a press release.' },
+    ] },
+    { q: 'Q7. True or false: being on dating apps "just to look" is compatible with monogamy.', options: [
+      { text: 'True', fb: 'Incorrect. "Just looking" is how every previous cycle started. The Department has the records.' },
+      { text: 'False', correct: true },
+    ] },
+  ];
+  function showMPanel(id) {
+    ['m-intro', 'm-quiz', 'm-complete'].forEach(p =>
+      document.getElementById(p).style.display = (p === id) ? (p === 'm-complete' ? 'block' : '') : 'none');
+  }
+  function renderMQuiz() {
+    const item = MQUIZ[mIndex];
+    document.getElementById('m-progress').textContent = `Question ${mIndex + 1} of ${MQUIZ.length}`;
+    document.getElementById('m-question').textContent = item.q;
+    const box = document.getElementById('m-options');
+    box.innerHTML = '';
+    document.getElementById('m-feedback').style.display = 'none';
+    document.getElementById('m-next').style.display = 'none';
+    item.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="label"></span>';
+      btn.querySelector('.label').textContent = opt.text;
+      btn.addEventListener('click', () => {
+        const fb = document.getElementById('m-feedback');
+        if (opt.correct) {
+          btn.classList.add('quiz-correct');
+          box.querySelectorAll('.choice').forEach(b => b.disabled = true);
+          fb.className = 'feedback good';
+          fb.textContent = 'Correct.';
+          fb.style.display = 'block';
+          const next = document.getElementById('m-next');
+          next.style.display = 'inline-block';
+          next.textContent = mIndex < MQUIZ.length - 1 ? 'Next question' : 'Complete module';
+        } else {
+          btn.classList.add('quiz-wrong');
+          fb.className = 'feedback bad';
+          fb.textContent = opt.fb;
+          fb.style.display = 'block';
+        }
+      });
+      box.appendChild(btn);
+    });
+  }
+  document.getElementById('m-begin').addEventListener('click', () => { renderMQuiz(); showMPanel('m-quiz'); });
+  document.getElementById('m-next').addEventListener('click', () => {
+    if (mIndex < MQUIZ.length - 1) {
+      mIndex++;
+      renderMQuiz();
+    } else {
+      monogamyComplete = true;
+      showMPanel('m-complete');
+    }
+  });
+  document.getElementById('m-goto-gf').addEventListener('click', () => {
+    show('screen-more-time');
+    showMoreTimePanel('form-girlfriend');
+  });
+  function resetMonogamy() {
+    if (monogamyComplete) {
+      showMPanel('m-complete');
+    } else {
+      mIndex = 0;
+      showMPanel('m-intro');
+    }
+  }
 
   // Life partner application: rendered from data, 31 items, all required
   const LP_SECTIONS = [
