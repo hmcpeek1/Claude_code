@@ -309,6 +309,34 @@
   .status-no { color: var(--deny); font-style: normal; font-weight: 600; }
   .status-yes { color: var(--ok); font-style: normal; font-weight: 600; }
 
+  .reflect {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    background: #fdfcfa;
+  }
+  .reflect-title { font-family: Georgia, serif; font-size: 16px; margin-bottom: 6px; }
+  .reflect-q {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--line);
+    font-size: 14px;
+  }
+  .reflect-q span { flex: 1; }
+  .yn-btn {
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .yn-btn.on-yes { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  .yn-btn.on-no { border-color: var(--ink-soft); background: var(--line); font-weight: 600; }
+
   .progress-label {
     font-size: 11.5px;
     text-transform: uppercase;
@@ -677,7 +705,7 @@
         <li><span class="check">✓</span> Who Haley follows on Instagram is not weird</li>
         <li><span class="check">✓</span> It is also not creepy, nor stalker-ish</li>
         <li><span class="check">✓</span> It is, however, no longer any of your business</li>
-        <li><span class="check">✓</span> The party who sent 12 consecutive days of unsolicited content may not be best positioned to define "weird behavior"</li>
+        <li><span class="check">✓</span> The party conducting an ongoing unsolicited content campaign may not be best positioned to define "weird behavior"</li>
       </ul>
       <div class="notice">This complaint is now closed. Related complaints ("acting cold,"
       "needs to grow up," "nothing to be jealous about") have been batch-processed
@@ -802,11 +830,20 @@
       <p class="progress-label">Lesson 2 of 4 · Self-Identification of Conduct</p>
       <h2>What I Did</h2>
       <p class="lede">In your own words, describe what you did. This module does
-      <strong>not</strong> provide a list. Trainees who cannot recall any conduct are
-      encouraged to sit quietly with the question. There is no time limit. There is
-      also no hint button.</p>
+      <strong>not</strong> provide a list of your conduct — but if nothing is coming
+      to mind, the guided reflection below can help you locate the material. There is
+      no time limit.</p>
+
+      <div class="reflect">
+        <h4 class="reflect-title">Guided reflection — how do I understand what I did?</h4>
+        <p class="lp-note">Answer honestly. These are common patterns, not a list of
+        your actions. Every "yes" is a place to start writing.</p>
+        <div id="reflect-list"></div>
+        <p class="lp-note" id="reflect-tally"></p>
+      </div>
+
       <div class="field">
-        <textarea id="t2-text" placeholder="Begin with the word 'I.'"></textarea>
+        <textarea id="t2-text" placeholder="Begin with the word 'I.' Each 'yes' above can become a sentence here."></textarea>
       </div>
       <div class="feedback" id="t2-feedback" style="display:none"></div>
       <button class="btn" id="t2-submit">Submit for review</button>
@@ -1015,7 +1052,7 @@
         { t: 'textarea', label: 'III-1. Describe every instance in which dating apps were announced deleted while accounts remained active', ph: 'Take your time. The form autosaves nothing.' },
         { t: 'textarea', label: 'III-2. Describe what "go find another man" communicates to the person you are now asking to be your life partner', ph: 'Use complete sentences.' },
         { t: 'textarea', label: 'III-3. List each hurtful event of the last twelve (12) months and what you would do differently', ph: 'Chronological order preferred. Reverse-chronological accepted.' },
-        { t: 'textarea', label: 'III-4. Explain the twelve (12) days of post-breakup content. What was the goal? Was it achieved?', ph: 'Include the Guatemala reels in your analysis.' },
+        { t: 'textarea', label: 'III-4. Explain the post-breakup content campaign. What was the goal? Was it achieved?', ph: 'Include the Guatemala reels in your analysis.' },
       ] },
     { title: 'Part IV — Forward Commitments',
       items: [
@@ -1141,7 +1178,7 @@
     angry: 'Anger received. It has been weighed and determined to be about you, not her.',
     aggressive: 'Aggressive content is automatically forwarded to the trash, which does not have feelings and cannot be hurt. Unlike some recipients.',
     sad: 'Sadness received. This one is real — and it is still not hers to fix. It would, however, make excellent material for Lesson 3 of the training module.',
-    blend: 'A confusing blend: consistent with the previous twelve (12) days of submissions. Pattern noted.',
+    blend: 'A confusing blend: consistent with the submission history on file. Pattern noted.',
     none: 'Uncategorized feelings received. Categorizing them is a great first step — the training module can help.',
   };
   let selectedMood = 'none';
@@ -1272,12 +1309,62 @@
     }
   });
 
+  // Lesson 2 guided reflection: common patterns, never his specific conduct
+  const REFLECT_QS = [
+    'Did you dismiss or minimize her feelings when she told you she was hurt?',
+    'Did you keep contacting her after she asked for space?',
+    'Did you label her — cold, jealous, dramatic — for having a reaction to your behavior?',
+    'Did you promise a change and then not follow through?',
+    'Did you refuse to commit to her while expecting her to stay available to you?',
+    'Did you demand her time or attention (a call, a lunch, a conversation) instead of respecting her goodbye?',
+  ];
+  const reflectAnswers = new Array(REFLECT_QS.length).fill(null);
+  function renderReflect() {
+    const list = document.getElementById('reflect-list');
+    list.innerHTML = '';
+    REFLECT_QS.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'reflect-q';
+      const label = document.createElement('span');
+      label.textContent = q;
+      row.appendChild(label);
+      ['Yes', 'No'].forEach(v => {
+        const btn = document.createElement('button');
+        btn.className = 'yn-btn';
+        btn.textContent = v;
+        btn.addEventListener('click', () => {
+          reflectAnswers[i] = v;
+          row.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('on-yes', 'on-no'));
+          btn.classList.add(v === 'Yes' ? 'on-yes' : 'on-no');
+          updateReflectTally();
+        });
+        row.appendChild(btn);
+      });
+      list.appendChild(row);
+    });
+    updateReflectTally();
+  }
+  function updateReflectTally() {
+    const tally = document.getElementById('reflect-tally');
+    const answered = reflectAnswers.filter(Boolean).length;
+    const yeses = reflectAnswers.filter(a => a === 'Yes').length;
+    if (answered === 0) { tally.textContent = ''; return; }
+    if (yeses > 0)
+      tally.textContent = `You answered "yes" ${yeses} time${yeses === 1 ? '' : 's'}. Each one is a sentence that starts with "I." Write them in the box below, in your own words.`;
+    else if (answered === REFLECT_QS.length)
+      tally.textContent = 'Zero yeses. The Department recommends re-reading each question, slowly, in her voice.';
+    else
+      tally.textContent = 'Keep going — answer them all before deciding none apply.';
+  }
+
   // Lessons 2 & 3: free-text review. Comments critique the format, never supply the content.
   function reviewText(text, mode) {
     const t = ' ' + text.toLowerCase() + ' ';
     const problems = [];
-    if (text.trim().length < 60)
-      problems.push('Submission too brief. Conduct spanning four (4) years plus twelve (12) days of follow-up cannot be summarized in under sixty characters.');
+    if (text.trim().length < 20)
+      problems.push(mode === 'impact'
+        ? 'Submission too brief. One full thought, minimum.'
+        : 'Submission too brief. Take one "yes" from the reflection above and write it as a full sentence beginning with "I."');
     if (/^\s*(she|you|haley)\b/i.test(text))
       problems.push('Submission begins with someone other than yourself. This lesson is titled "What I Did," not "What She Did."');
     if (!(mode === 'impact' ? /\b(I|my)\b/i : /\bI\b/).test(text))
@@ -1386,6 +1473,8 @@
 
   function resetTraining() {
     quizIndex = 0;
+    reflectAnswers.fill(null);
+    renderReflect();
     showTrainingPanel('t-intro');
     ['t2', 't3', 't4'].forEach(p => {
       const el = document.getElementById(`${p}-text`);
