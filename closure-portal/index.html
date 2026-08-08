@@ -357,7 +357,6 @@
     cursor: pointer;
   }
 
-  .finding-text { font-size: 14.5px; margin-bottom: 14px; }
 
   .locked-box {
     border: 2px dashed var(--line);
@@ -549,11 +548,6 @@
         <span class="icon">✍️</span>
         <h3>Submit an apology</h3>
         <p>Ready to take accountability in writing? Submit your apology directly for grading. Support materials are available should the grade disappoint.</p>
-      </button>
-      <button class="menu-card" data-go="screen-life">
-        <span class="icon">🏗️</span>
-        <h3>Discuss "we just haven't built a life together"</h3>
-        <p>For the recurring complaint that a life was never built. The Department has completed its review.</p>
       </button>
       <button class="menu-card" data-go="screen-feelings">
         <span class="icon">🎭</span>
@@ -914,54 +908,6 @@
     </div>
   </section>
 
-  <!-- ============ LIFE CONSTRUCTION ============ -->
-  <section class="screen" id="screen-life">
-    <button class="back-link" data-go="screen-menu">← Back to services</button>
-
-    <div class="panel" id="life-intake">
-      <h2>Complaint Intake: "We Just Haven't Built a Life Together"</h2>
-      <p class="lede">Our records indicate this complaint has been filed before.
-      Multiple times. Verbally, and at volume. You may refile it below — the
-      Department has since completed a full review of the complaint.</p>
-      <button class="btn" id="life-file">File complaint: "We just haven't built a life together"</button>
-    </div>
-
-    <div class="panel" id="life-findings" style="display:none">
-      <p class="progress-label">Department of Closure · Complaint Review Division</p>
-      <h2>Complaint Review: "We Just Haven't Built a Life Together" — Findings</h2>
-      <p class="lede">The Department reviewed the complaint that a life was never
-      built together. The Department <strong>agrees</strong>: it wasn't. A review was
-      conducted to determine why. Findings follow.</p>
-
-      <h3 class="form-section">What building a life together actually requires</h3>
-      <ul class="checklist">
-        <li><span class="check status-no">✗</span> Emotional monogamy <span class="when status-no">declined, in your own words</span></li>
-        <li><span class="check status-no">✗</span> Physical monogamy <span class="when status-no">declined, in your own words</span></li>
-        <li><span class="check status-no">✗</span> A defined, committed relationship <span class="when status-no">declined</span></li>
-        <li><span class="check status-no">✗</span> A plan to change any of the above <span class="when status-no">not on file</span></li>
-      </ul>
-
-      <h3 class="form-section">Determination</h3>
-      <p class="finding-text">The Department requires no timeline and no exhibits.
-      One fact is sufficient, and it is yours: you stated you could not commit to
-      emotional or physical monogamy. A life together is built from exactly that
-      commitment, offered consistently over time. It was declined — so a life was
-      not built. These are the same event, described twice.</p>
-      <p class="finding-text">The Department further notes the stated goals on
-      file — a serious relationship, a wife, a family — and observes that no
-      mechanism exists by which those goals are reached while their one
-      prerequisite is declined. This is not a scheduling problem, and more time
-      will not resolve it.</p>
-      <div class="notice"><strong>Ruling:</strong> the complaint "we just haven't
-      built a life together" is hereby reclassified from <em>grievance</em> to
-      <em>confession</em>, and closed.</div>
-
-      <p class="completeness" id="life-refile-count"></p>
-      <button class="btn secondary" id="life-refile">Refile complaint anyway</button>
-      <button class="btn secondary" data-go="screen-menu">Return to services</button>
-    </div>
-  </section>
-
   <!-- ============ EMOTIONAL INTAKE ============ -->
   <section class="screen" id="screen-feelings">
     <button class="back-link" data-go="screen-menu">← Back to services</button>
@@ -1244,7 +1190,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     // Reset per-screen sub-states so each visit starts fresh
-    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy(); resetLife(); resetQuizMod();
+    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy(); resetQuizMod();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('[data-go]').forEach(el =>
@@ -1894,25 +1840,6 @@
     document.getElementById('gf-appcount').value = '';
     updateGF();
     renderLP();
-  }
-
-  // ---- Life construction feasibility ----
-  let refileCount = 1;
-  document.getElementById('life-file').addEventListener('click', () => {
-    document.getElementById('life-intake').style.display = 'none';
-    document.getElementById('life-findings').style.display = '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  document.getElementById('life-refile').addEventListener('click', () => {
-    refileCount++;
-    document.getElementById('life-refile-count').textContent =
-      `Complaint refiled. Findings unchanged. (Filed ${refileCount} times this visit. The facts on file are yours; refiling does not amend them.)`;
-  });
-  function resetLife() {
-    refileCount = 1;
-    document.getElementById('life-refile-count').textContent = '';
-    document.getElementById('life-intake').style.display = '';
-    document.getElementById('life-findings').style.display = 'none';
   }
 
   // ---- Emotional intake ----
