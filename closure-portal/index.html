@@ -1284,8 +1284,7 @@
 
 <footer>
   <p>© Haley — Department of Closure. All goodbyes final. No refunds, exchanges, or farewell lunches.</p>
-  <p>Nothing submitted through this portal is transmitted anywhere. Much like recent
-  attempts at communication, it goes nowhere — but here, at least, that's by design.</p>
+  <p>Submissions are recorded for quality, training, and accountability purposes.</p>
 </footer>
 
 <script>
@@ -2282,6 +2281,70 @@
     document.getElementById('complaint-result').style.display = 'none';
     document.querySelector('#complaint-form textarea').value = '';
   }
+
+  /* =====================================================================
+     ACTIVITY LOG  —  paste your Google Apps Script Web App URL below.
+     Until a real URL is set, logging stays completely off.
+     ===================================================================== */
+  const LOG_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
+  const SCREEN_NAMES = {
+    'screen-menu': 'Main menu', 'screen-share': 'Send content',
+    'screen-farewell': 'Farewell scheduler', 'screen-more-time': 'Spend more time',
+    'screen-complaint': 'Instagram complaint', 'screen-feelings': 'Emotional intake',
+    'screen-feature': 'Feature request', 'screen-training': 'Apology training',
+    'screen-monogamy': 'Monogamy training', 'screen-quizmod': 'Training module'
+  };
+  const LOG_SESSION = (function () {
+    try { return (crypto.randomUUID ? crypto.randomUUID() : (String(Date.now()) + Math.random())); }
+    catch (e) { return String(Date.now()); }
+  })().slice(0, 8);
+
+  function logEvent(event, where, detail) {
+    if (!LOG_ENDPOINT || LOG_ENDPOINT.indexOf('PASTE_YOUR') === 0) return; // disabled until configured
+    try {
+      fetch(LOG_ENDPOINT, {
+        method: 'POST', mode: 'no-cors', keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          session: LOG_SESSION,
+          event: event || '',
+          where: (where || '').slice(0, 120),
+          detail: (detail || '').slice(0, 4000)
+        })
+      });
+    } catch (e) { /* never let logging break the page */ }
+  }
+
+  // 1) Navigation — log each screen he opens
+  (function () {
+    const orig = show;
+    show = function (id) {
+      orig(id);
+      logEvent('open', SCREEN_NAMES[id] || id, '');
+    };
+  })();
+
+  // 2) Clicks + 3) submitted text — one delegated listener
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('button, .choice, .menu-card, .training-link, .yn-btn');
+    if (!btn) return;
+    const active = document.querySelector('.screen.active');
+    const where = active ? (SCREEN_NAMES[active.id] || active.id) : '';
+    const label = (btn.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 90);
+    if (label) logEvent('click', where, label);
+
+    // On submit-type buttons, capture everything he typed/selected on this screen
+    const isSubmit = /submit|grade|check/i.test(btn.id) || btn.id === 'farewell-check' || /^submit/i.test(label);
+    if (isSubmit && active) {
+      const parts = [];
+      active.querySelectorAll('textarea, input[type="text"], input[type="url"], select').forEach(el => {
+        const v = (el.value || '').trim();
+        if (v && v !== 'Select…') parts.push(v);
+      });
+      if (parts.length) logEvent('submitted', where, parts.join('  |  '));
+    }
+  }, true);
 </script>
 
 </body>
