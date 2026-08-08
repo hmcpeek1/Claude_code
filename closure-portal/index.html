@@ -682,7 +682,25 @@
           <span class="label">C) Life Partner</span>
           <span class="desc">Long-term partnership. The full application. You may want to sit down.</span>
         </button>
+        <button class="choice" id="choice-friend">
+          <span class="label">D) Friend</span>
+          <span class="desc">Platonic. No application required — but not available on demand.</span>
+        </button>
       </div>
+    </div>
+
+    <!-- D: Friend -->
+    <div class="panel" id="result-friend" style="display:none">
+      <h2>Friendship: on hold</h2>
+      <p class="lede">Both parties need time to move on. A friendship may be
+      considered, <strong>with mutual opt-in, in one (1) year's time</strong>.</p>
+      <div class="notice">This is not a rejection of friendship — it is a hold on it.
+      A real friendship cannot be built on top of unprocessed feelings, and the
+      timer does not start early to accommodate anyone's schedule.</div>
+      <p class="meta">Eligibility opens no sooner than twelve (12) months from the
+      breakup. Opt-in must be mutual. Checking whether the year is up yet does not
+      shorten the year.</p>
+      <button class="btn secondary" data-go="screen-menu" style="margin-top:6px">Return to services</button>
     </div>
 
     <!-- A: Situationship -->
@@ -1247,7 +1265,7 @@
   }
 
   // ---- More time ----
-  const moreTimePanels = ['tier-select', 'result-situationship', 'form-girlfriend', 'form-partner', 'application-receipt'];
+  const moreTimePanels = ['tier-select', 'result-situationship', 'form-girlfriend', 'form-partner', 'result-friend', 'application-receipt'];
   function showMoreTimePanel(id) {
     moreTimePanels.forEach(p =>
       document.getElementById(p).style.display = (p === id) ? (p === 'result-situationship' ? 'block' : '') : 'none');
@@ -1257,6 +1275,7 @@
   document.getElementById('choice-situationship').addEventListener('click', () => showMoreTimePanel('result-situationship'));
   document.getElementById('choice-girlfriend').addEventListener('click', () => showMoreTimePanel('form-girlfriend'));
   document.getElementById('choice-partner').addEventListener('click', () => showMoreTimePanel('form-partner'));
+  document.getElementById('choice-friend').addEventListener('click', () => showMoreTimePanel('result-friend'));
   document.getElementById('girlfriend-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
   document.getElementById('partner-submit').addEventListener('click', () => showMoreTimePanel('application-receipt'));
 
