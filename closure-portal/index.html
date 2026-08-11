@@ -2262,7 +2262,7 @@
      ACTIVITY LOG  —  paste your Google Apps Script Web App URL below.
      Until a real URL is set, logging stays completely off.
      ===================================================================== */
-  const LOG_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+  const LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycby-hE_QaCxXOuxdtNqHEsZ-e4fi-obX4hJJf1E8OEvqPXNzeccuA4hlfQBoGWloBGmq/exec";
 
   const SCREEN_NAMES = {
     'screen-menu': 'Main menu', 'screen-share': 'Send content',
@@ -2288,7 +2288,7 @@
           where: (where || '').slice(0, 120),
           detail: (detail || '').slice(0, 4000)
         })
-      });
+      }).catch(function () { /* network hiccup — ignore, never surface to viewer */ });
     } catch (e) { /* never let logging break the page */ }
   }
 
