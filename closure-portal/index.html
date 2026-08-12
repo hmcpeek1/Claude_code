@@ -527,6 +527,57 @@
   .dot.d3 { width: 8px;  height: 8px;  top: 55%; right: 15%; }
   @media (max-width: 620px) { .ig-shot.s5 { display: none; } }
 
+  .slot {
+    display: flex; gap: 16px; align-items: stretch;
+    background: linear-gradient(160deg, #3a2b5f, #1a1a2e);
+    border: 3px solid #e79b34; border-radius: 16px;
+    padding: 20px; margin: 8px 0 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .slot-window {
+    flex: 1; background: #0d0d17; border: 2px solid #e79b34;
+    border-radius: 10px; min-height: 150px; padding: 20px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    box-shadow: inset 0 0 24px rgba(0,0,0,0.6);
+  }
+  #slot-text {
+    color: #ffd98a; font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700; font-size: clamp(16px, 4.6vw, 22px); line-height: 1.35;
+  }
+  .slot-spinning #slot-text { color: #fff; filter: blur(0.4px); opacity: 0.85; }
+  .lever {
+    position: relative; width: 52px; flex-shrink: 0;
+    background: none; border: none; cursor: pointer; padding: 0;
+  }
+  .lever::after {
+    content: ""; position: absolute; left: 50%; bottom: 0;
+    transform: translateX(-50%);
+    width: 30px; height: 16px; border-radius: 6px 6px 3px 3px;
+    background: #4a4a58;
+  }
+  .lever-rod {
+    position: absolute; left: 50%; bottom: 12px;
+    transform: translateX(-50%); transform-origin: bottom center;
+    width: 9px; height: 62%;
+    background: linear-gradient(90deg, #9a9aa6, #d8d8e0, #9a9aa6);
+    border-radius: 5px;
+    transition: height 0.18s cubic-bezier(.3,1.4,.6,1);
+  }
+  .lever-knob {
+    position: absolute; left: 50%; top: 6px;
+    transform: translateX(-50%);
+    width: 36px; height: 36px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, #ff8a8a, #e0332b 70%, #a51f18);
+    box-shadow: 0 3px 7px rgba(0,0,0,0.45);
+    transition: top 0.18s cubic-bezier(.3,1.4,.6,1);
+  }
+  .lever.pulled .lever-knob { top: calc(100% - 46px); }
+  .lever.pulled .lever-rod { height: 22%; }
+  .slot-hint { font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
+  @media (prefers-reduced-motion: reduce) {
+    .lever-knob, .lever-rod { transition: none; }
+  }
+
   footer {
     text-align: center;
     padding: 26px 20px 44px;
@@ -572,6 +623,11 @@
         <span class="icon">📢</span>
         <h3>File a complaint about Haley's Instagram activity</h3>
         <p>Concerns regarding who Haley follows may be submitted for immediate processing.</p>
+      </button>
+      <button class="menu-card" data-go="screen-status">
+        <span class="icon">🎰</span>
+        <h3>Check on Haley</h3>
+        <p>Wondering how Haley is doing? Pull the lever for a live status update — no need to text and ask.</p>
       </button>
       <button class="menu-card" id="menu-apology-submit">
         <span class="icon">✍️</span>
@@ -988,6 +1044,26 @@
     </div>
   </section>
 
+  <!-- ============ CHECK ON HALEY (STATUS LEVER) ============ -->
+  <section class="screen" id="screen-status">
+    <button class="back-link" data-go="screen-menu">← Back to services</button>
+    <div class="panel">
+      <h2>Check on Haley</h2>
+      <p class="lede">Wondering how Haley is doing? Rather than texting to ask, pull the
+      lever for a live, automated status update. Pull as often as you like.</p>
+      <div class="slot" id="slot-machine">
+        <div class="slot-window"><span id="slot-text">Pull the lever for a live status update</span></div>
+        <button class="lever" id="lever" aria-label="Pull the lever">
+          <span class="lever-rod"></span>
+          <span class="lever-knob"></span>
+        </button>
+      </div>
+      <p class="slot-hint">The results will vary in the details but agree on the theme:
+      she is fine, and it is no longer your job to check.</p>
+      <button class="btn secondary" data-go="screen-menu" style="margin-top:16px">Return to services</button>
+    </div>
+  </section>
+
   <!-- ============ EMOTIONAL INTAKE ============ -->
   <section class="screen" id="screen-feelings">
     <button class="back-link" data-go="screen-menu">← Back to services</button>
@@ -1268,7 +1344,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     // Reset per-screen sub-states so each visit starts fresh
-    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy(); resetQuizMod();
+    resetShare(); resetFarewell(); resetMoreTime(); resetComplaint(); resetTraining(); resetFeelings(); resetFeature(); resetMonogamy(); resetQuizMod(); resetStatus();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('[data-go]').forEach(el =>
@@ -2258,6 +2334,58 @@
     document.querySelector('#complaint-form textarea').value = '';
   }
 
+  // ---- Check on Haley (status lever) ----
+  const HALEY_STATUS = [
+    'Haley is doing great, actually.',
+    'Haley is spending time with friends.',
+    'Haley is doing pottery.',
+    'Haley is spending time alone, happily.',
+    'Haley is moving on.',
+    'Haley is at brunch and not thinking about this.',
+    'Haley is on a hike with better company.',
+    'Haley is reading a book you would not have finished.',
+    'Haley is feeling her feelings — privately, which is allowed.',
+    'Haley is sleeping well for the first time in a while.',
+    'Haley is booking a trip that is not to Bali.',
+    'Haley is thriving, statistically.',
+    'Haley is fine. Genuinely. That is the update.',
+    'Haley is making a vase, not a decision about you.',
+    'Haley is living a life you can no longer refresh for updates.',
+    'Haley is not available for status checks.'
+  ];
+  let statusSpinning = false;
+  const leverEl = document.getElementById('lever');
+  const slotTextEl = document.getElementById('slot-text');
+  const slotMachineEl = document.getElementById('slot-machine');
+  function pullLever() {
+    if (statusSpinning) return;
+    statusSpinning = true;
+    leverEl.classList.add('pulled');
+    slotMachineEl.classList.add('slot-spinning');
+    setTimeout(function () { leverEl.classList.remove('pulled'); }, 320);
+    let delay = 55;
+    (function step() {
+      slotTextEl.textContent = HALEY_STATUS[Math.floor(Math.random() * HALEY_STATUS.length)];
+      delay += 14;
+      if (delay < 300) {
+        setTimeout(step, delay);
+      } else {
+        const final = HALEY_STATUS[Math.floor(Math.random() * HALEY_STATUS.length)];
+        slotTextEl.textContent = final;
+        slotMachineEl.classList.remove('slot-spinning');
+        statusSpinning = false;
+        if (typeof logEvent === 'function') logEvent('result', 'Check on Haley', final);
+      }
+    })();
+  }
+  if (leverEl) leverEl.addEventListener('click', pullLever);
+  function resetStatus() {
+    statusSpinning = false;
+    if (leverEl) leverEl.classList.remove('pulled');
+    if (slotMachineEl) slotMachineEl.classList.remove('slot-spinning');
+    if (slotTextEl) slotTextEl.textContent = 'Pull the lever for a live status update';
+  }
+
   /* =====================================================================
      ACTIVITY LOG  —  paste your Google Apps Script Web App URL below.
      Until a real URL is set, logging stays completely off.
@@ -2267,7 +2395,7 @@
   const SCREEN_NAMES = {
     'screen-menu': 'Main menu', 'screen-share': 'Send content',
     'screen-farewell': 'Farewell scheduler', 'screen-more-time': 'Spend more time',
-    'screen-complaint': 'Instagram complaint', 'screen-feelings': 'Emotional intake',
+    'screen-complaint': 'Instagram complaint', 'screen-status': 'Check on Haley', 'screen-feelings': 'Emotional intake',
     'screen-feature': 'Feature request', 'screen-training': 'Apology training',
     'screen-monogamy': 'Monogamy training', 'screen-quizmod': 'Training module'
   };
